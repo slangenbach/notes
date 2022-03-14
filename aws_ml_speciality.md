@@ -1,22 +1,42 @@
 # AWS ML Specialty 
 
+## General
+
+* tbd
+
 ## Kinesis
 
-* Data streams: Think real-time
-* Firehose: Think ingestion
-* Analytics: Think ETL
-* Video streams: Think video ;-)
+* If you read real-time, think Kinesis
+* There exist 4 Kinesis services: Data streams, Analytics, Firehose and Video Streams
+
+### Data Streams
+
+* Streams are divided into shards/partitions
+* Streams allow custom code for producer/consumer and is real-time
+* Shards need to be provisioned in advance
+* 24h default retention
+* Maximum record size is 1MB
+* Producer: 1 MB/s or 1000 messages/shard
+* Consumer: 2 MB/s per shard
 
 ### Analytics
 
+* If you read Kinesis Analytics, think ETL, i.e. real-time analysis on streams using SQL
 * is built on Apache Flink
 * Input can come from Kinesis Data Streams or Firehose
 * We can use lookup tables (stored in S3) while analyzing the stream
 * Lambda functions can be used for stream processing
 * Kinesis comes with built in anomaly detection (Random Cut Forrest [uses only recent history]), and detection of dense locations (HOTSPOTS) - both are implemented as SQL functions
 
+### Firehose
+
+* If you read Kinesis Firehose, think ingestion, i.e. load streams into S3/RedShift/ElasticSearch/3rd-party-tools (Splunk)/HTTP endpoints as batches (near-real-time)
+* allows converting records to Parquet or ORC
+* also supports compression and encryption
+
 ### Video Streams
 
+* If you read Kinesis Video Streams, think video, i.e. stream video in real-time ;-)
 * meant to stream data from cameras
 * can playback video
 * Video content can also be send to AI services, e.g. Recognition
