@@ -44,3 +44,28 @@
 ## Glue
 
 ### Data catalog
+
+* Think metadata repository
+* Crawlers work on JSON, Parquet, CSV, relational databases and on services like S3, RDS, Redshift
+* Crawlers automatically infer schemas and create tables from S3 buckets
+
+## ETL
+
+* Supports Python/Scala and PySpark
+* Supports bundled transformations, i.e. DropFields, Filter, etc. and machine learning transformations, i.e. FindMatches (fuzzy matching)
+
+## Athena
+
+* tbd
+
+## Data stores
+
+* Redshift: Warehousing, Columnar storage
+* RDS/Aurora: Relational database
+* Dynamo DB: NoSQL database
+* S3: Object storage
+* ElasticSearch: Clickstream analytics and search
+* ElastiCache: Caching
+
+## Data pipelines
+
