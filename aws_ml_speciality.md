@@ -90,5 +90,16 @@
 * If you read workflow, think step functions
 * Can be used to manage batch jobs, e.g. using Glue
 
-
 ## Exploratory data analysis
+
+* Types of data (continuous, discrete, categorical, ordinal)
+* Data distributions, probability density function (continuos) / probability mass function (discrete data)
+* Poisson distribution, binominal distribution, Bernoulli distribution (single trial)
+* Time series = seasonality + trends + noise
+
+### AWS Tooling for EDA
+
+* Athena
+* QuickSight (SPICE engine for in-memory calculations, Insights for anomaly detection and forecasting)
+* EMR (managed Hadoop using EC2 instances, can use S3 as file system using EMRFS)
+
