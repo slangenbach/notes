@@ -2,7 +2,13 @@
 
 ## General
 
-* tbd
+* Know about the curse of dimensionality (exploding solution space)
+* Know how to handle missing data. i.e. dropping, replacement with mean, imputing with ML techniques (Regression [MICE], KNN, etc.), getting more data
+* Know how to handle imbalanced data, i.e. oversampling (duplicate minority classes [SMOTE]), undersampling, 
+* Know how to handle outliers, i.e. removing (filter by IQR or std. dev, using Random Cut Forest algorithm, etc.)
+* Know what binning (putting observations in ranges of values), encoding/scaling are
+* Know about confusion matrices, precision, recall/sensitivity (true positive rate, useful for fraud detection), F1 and ROC, AUC and their formulas
+* Know about bagging (multiple models) and boosting (sequence models)
 
 ## Data Engineering
 
@@ -45,7 +51,7 @@
 
 ### Glue
 
-#### Data catalog
+#### Data Catalog
 
 * Think metadata repository
 * Crawlers work on JSON, Parquet, CSV, relational databases and on services like S3, RDS, Redshift
@@ -60,7 +66,7 @@
 
 * tbd
 
-### Data stores
+### Data Stores
 
 * Redshift: Warehousing, Columnar storage
 * RDS/Aurora: Relational database
@@ -69,7 +75,7 @@
 * ElasticSearch: Clickstream analytics and search
 * ElastiCache: Caching
 
-### Data pipelines
+### Data Pipelines
 
 * Orchestrator to transfer data from AWS/on-premise to another AWS service
 * In comparison to Glue you have more control over resources and configuration
@@ -103,3 +109,19 @@
 * QuickSight (SPICE engine for in-memory calculations, Insights for anomaly detection and forecasting)
 * EMR (managed Hadoop using EC2 instances, can use S3 as file system using EMRFS)
 
+### AWS Tooling for data labeling
+
+* SageMaker Ground Truth (plus)
+* AWS Rekognition (image recognition)
+* Comprehend (text analysis)
+
+## Modeling
+
+* Activation functions (sigmoid/logistic [0-1], tanh [-1-1], ReLu [0 or positive], leaky ReLu [can have negative values], softmax, etc.)
+* Use softmax for multiple classification, tanh for RNN, and start with ReLu for everything else
+* Use CNN for image analysis, RNNs for time-series data or data that consists for sequences of arbitrary length
+* RNN topologies?
+* Regularization techniques for neural networks include dropout (drop out neurons at random) and early stopping
+* L1 regularization (remove features, inefficient, sparse output), L2 regularization (adjust weight of features, efficient, dense output)
+* Vanishing gradient problem: Slope of learning curve approaches zero, things get stuck as we work with small numbers that slow down training or introduce errors - Use LSTM nets or ResNet to deal with it
+* Exploding gradient problem: 
