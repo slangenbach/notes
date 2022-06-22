@@ -124,4 +124,132 @@
 * Regularization techniques for neural networks include dropout (drop out neurons at random) and early stopping
 * L1 regularization (remove features, inefficient, sparse output), L2 regularization (adjust weight of features, efficient, dense output)
 * Vanishing gradient problem: Slope of learning curve approaches zero, things get stuck as we work with small numbers that slow down training or introduce errors - Use LSTM nets or ResNet to deal with it
-* Exploding gradient problem: 
+* Exploding gradient problem: tbd
+
+### SageMaker
+* Supports automatic hyperparameter optimization, which Finds the best parameters given a range of values
+* Integrates with Spark via sagemaker-spark library
+* Debugger allows to inspect models during training stage
+* Autopilot does AutoML and integrates with SageMaker Clarify
+* Model Monitor monitors data/model quality
+* Supports templates/pre-trained models via JumpStart
+
+#### Algorithms
+
+##### Linear Learner
+* Linear learner for regression and classification 
+* Accepts RecordIO and CSV inputs
+* Can do normalization of inputs automatically
+* Can use different optimization algorithms, e.g. SGD
+* Can train multiple models in parallel
+
+##### XGBoost
+* Can be used for regression and classification
+* Accepts CSV, libsvm, RecordIO and parquet as input
+* Performance is memory-bound
+* Can be trained on GPUs
+* Hyperparameters one might see on the exam:
+    - subsample
+    - eta (step size shrinking)
+    - gamma (minimum loss reduction to create partition)
+    - alpha (L1 regularization)
+    - lambda (L2 regularization)
+    - eval_metric
+    - scale_post_weight (handle unbalanced data by adjusting balance of positive/negative weights)
+    - max_depth (of tree)
+
+##### Seq2Seq
+* Can be used for machine translation, text summaries, speech-to-text, etc.
+* Accepts RecordIO (integers)
+* Pre-trained models and dedicated training sets are available
+* Hyperparameters one might see on the exam:
+    - batch_size
+    - optimizer_type
+    - learning_rate
+    - num_layers_encoder
+    - num_layers_decoder
+* Can optimize on accuracy, BLEU score (comparison against multiple reference translations), perplexity
+* Uses GPU and can use multiple GPUs on a single instance
+
+##### DeepAR
+* Can forecast one-dimensional time series
+* Automatically finds frequencies and seasonality
+* Accepts JSON and parquet
+* Hyperparameters one might see on the exam:
+    - context_length (number of time points model sees before making prediction)
+    - epochs
+    - mini_batch_size
+    - learning_rate
+    - num_cells
+* Can use CPU and GPU instances
+
+##### BlazingText
+* Can be used for text classification (only sentences, not entire documents)
+* Also supports Word2Vec
+* Accepts text as input (one sentence per line)
+
+##### Object2Vec
+* Like Word2Vec but generalized to objects, i.e. similar products
+* Accepts paired attributes (tokenized inputs)
+* Inputs -> Encoders -> Comparator -> Label
+* Can only train on single instance
+
+##### Object Detection
+* Identifies objects in images :-)
+* Can train from scratch or use pre-trained models
+* Accepts RecordIO or images (including JSON annotation file)
+
+##### Image Classification
+* Classifies images
+* Accepts RecordIO (MXNet format) or images (including annotation file)
+
+##### Semantic Segmentation
+* Can be used for pixel-level object classification
+* Accepts images (including annotation file)
+* Build on MXNet Gluon/Gluon CV
+
+##### Random Cut Forest
+* Can be used for anomaly detection
+* Unsupervised algorithm
+* Accepts RecordIO and CSV input
+* Identifies anomalies by looking at expected change in complexity of tree as result of adding a data point to it
+
+##### Neural Topic Model
+* Can be used to organize documents into topics
+* Unsupervised algorithm
+* Accepts RecordIO and CSV
+* Words must be tokenized first
+
+##### LDA
+* Another topic modeling algorithm (yet not based on deep learning)
+* Hyperparameters one might see on the exam:
+    - num_topics
+    -alpha0
+* Can only train on a single CPU instance
+
+##### KNN
+* Can be used for simple classification (find most frequent value) and regression (find average value) problems
+* Accepts RecordIO and CSV
+* Version built into SageMaker includes data sampling and dimensionality reduction
+
+##### K-Means
+* Can be used for unsupervised clustering
+* Version built into SageMaker scales very well
+
+##### PCA
+* Can be used for dimensionality reduction
+
+##### Factorization machines
+* Can be used with sparse data and thus is useful for click predictions, recommendations, etc.
+* Supports regression and classification
+
+##### IP Insights
+* Can be used to identify suspicious behavior from IP addresses
+* Only accepts CSV input
+
+##### Reinforcement Learning
+* Q-Learning
+* Is based on Tensorflow and MXNet
+* Version built into SageMaker supports distributed training
+
+#### Hyperparameter tuning
