@@ -134,16 +134,14 @@
 * Model Monitor monitors data/model quality
 * Supports templates/pre-trained models via JumpStart
 
-#### Algorithms
-
-##### Linear Learner
+#### Linear Learner
 * Linear learner for regression and classification 
 * Accepts RecordIO and CSV inputs
 * Can do normalization of inputs automatically
 * Can use different optimization algorithms, e.g. SGD
 * Can train multiple models in parallel
 
-##### XGBoost
+#### XGBoost
 * Can be used for regression and classification
 * Accepts CSV, libsvm, RecordIO and parquet as input
 * Performance is memory-bound
@@ -158,7 +156,7 @@
     - scale_post_weight (handle unbalanced data by adjusting balance of positive/negative weights)
     - max_depth (of tree)
 
-##### Seq2Seq
+#### Seq2Seq
 * Can be used for machine translation, text summaries, speech-to-text, etc.
 * Accepts RecordIO (integers)
 * Pre-trained models and dedicated training sets are available
@@ -171,7 +169,7 @@
 * Can optimize on accuracy, BLEU score (comparison against multiple reference translations), perplexity
 * Uses GPU and can use multiple GPUs on a single instance
 
-##### DeepAR
+#### DeepAR
 * Can forecast one-dimensional time series
 * Automatically finds frequencies and seasonality
 * Accepts JSON and parquet
@@ -183,73 +181,109 @@
     - num_cells
 * Can use CPU and GPU instances
 
-##### BlazingText
+#### BlazingText
 * Can be used for text classification (only sentences, not entire documents)
 * Also supports Word2Vec
 * Accepts text as input (one sentence per line)
 
-##### Object2Vec
+#### Object2Vec
 * Like Word2Vec but generalized to objects, i.e. similar products
 * Accepts paired attributes (tokenized inputs)
 * Inputs -> Encoders -> Comparator -> Label
 * Can only train on single instance
 
-##### Object Detection
+#### Object Detection
 * Identifies objects in images :-)
 * Can train from scratch or use pre-trained models
 * Accepts RecordIO or images (including JSON annotation file)
 
-##### Image Classification
+#### Image Classification
 * Classifies images
 * Accepts RecordIO (MXNet format) or images (including annotation file)
 
-##### Semantic Segmentation
+#### Semantic Segmentation
 * Can be used for pixel-level object classification
 * Accepts images (including annotation file)
 * Build on MXNet Gluon/Gluon CV
 
-##### Random Cut Forest
+#### Random Cut Forest
 * Can be used for anomaly detection
 * Unsupervised algorithm
 * Accepts RecordIO and CSV input
 * Identifies anomalies by looking at expected change in complexity of tree as result of adding a data point to it
 
-##### Neural Topic Model
+#### Neural Topic Model
 * Can be used to organize documents into topics
 * Unsupervised algorithm
 * Accepts RecordIO and CSV
 * Words must be tokenized first
 
-##### LDA
+#### LDA
 * Another topic modeling algorithm (yet not based on deep learning)
 * Hyperparameters one might see on the exam:
     - num_topics
     -alpha0
 * Can only train on a single CPU instance
 
-##### KNN
+#### KNN
 * Can be used for simple classification (find most frequent value) and regression (find average value) problems
 * Accepts RecordIO and CSV
 * Version built into SageMaker includes data sampling and dimensionality reduction
 
-##### K-Means
+#### K-Means
 * Can be used for unsupervised clustering
 * Version built into SageMaker scales very well
 
-##### PCA
+#### PCA
 * Can be used for dimensionality reduction
 
-##### Factorization machines
+#### Factorization machines
 * Can be used with sparse data and thus is useful for click predictions, recommendations, etc.
 * Supports regression and classification
 
-##### IP Insights
+#### IP Insights
 * Can be used to identify suspicious behavior from IP addresses
 * Only accepts CSV input
 
-##### Reinforcement Learning
+#### Reinforcement Learning
 * Q-Learning
 * Is based on Tensorflow and MXNet
 * Version built into SageMaker supports distributed training
 
-#### Hyperparameter tuning
+### ML services
+
+#### Comprehend
+* NLP
+* Extract key phrases, entities, sentiment, language, syntax, etc.
+* Can be trained on owned data
+
+#### Translate
+* Translates text
+* Supports custom terminology
+
+#### Transcribe
+* Speech to text
+* Supports audio files and streaming audio
+* Can identify speakers, channel, language
+* Supports custom vocabularies
+
+#### Polly
+* Text to speech
+* Supports lexicons, custom pronunciation and speech marks
+
+#### Rekognition
+* Computer vision for object and scene detection
+* Can be used for image moderation, facial analysis, recognition of celebs, etc.
+* Also supports video analysis (must come from Kinesis Video Streams)
+* Supports custom labels for your unique items
+
+#### Forecast
+* Time series forecasting
+* Supports multiple model
+
+#### Lex
+* Chatbot engine
+* Can be used to build chatbots automatically by providing transcripts
+
+#### Personalize
+* Recommendation engine
