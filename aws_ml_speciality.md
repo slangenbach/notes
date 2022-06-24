@@ -9,6 +9,16 @@
 * Know what binning (putting observations in ranges of values), encoding/scaling are
 * Know about confusion matrices, precision, recall/sensitivity (true positive rate, useful for fraud detection), F1 and ROC, AUC and their formulas
 * Know about bagging (multiple models) and boosting (sequence models)
+* Make sure you know how to put services together to build systems
+
+### Exam prep
+* Read exam guide
+* Solve sample questions
+* Take data analytics exam first
+* Take practice exams at Udemy or from AWS(40 USD)
+* Exam will take 120 min
+* Need to answer 75% of questions (49/65) correctly to pass
+
 
 ## Data Engineering
 
@@ -287,3 +297,33 @@
 
 #### Personalize
 * Recommendation engine
+* Supports real-time or batch predictions
+* Data is not shared across accounts
+
+#### Other
+* Textract (OCR)
+* DeepRacer (reinforcement learning using a small race car)
+* DeepLens (deep-learning enabled video camera)
+* Lookout for equipment (industry solution for detecting defects in equipment), metrics, vision
+* Monitron (predictive maintenance including hardware)
+* TorchServe (model serving for PyTorch)
+* Neuron (SDK for inference on AWS Inferentia chips)
+* Panomara (computer-vision at the edge -  brings CV to existing IP cameras)
+* DeepComposer (AI-powered keyboard)
+* Fraud detector (uses custom, historical fraud data and exposes and API where you can test events for fraud)
+* CodeGuru (ML-powered, automated code reviews)
+* Contact lens (ML for call centers - can search/categorize calls)
+* Kendra (enterprise search with natural language - Alexas sister)
+* Augmented AI (human review of ML predictions)
+
+### MLOps
+* Tensorflow relies on Horovod/Parameter Servers to do distributed training
+* SageMaker uses Flask under the hood
+* Production Variants allows you to distribute traffic to different models in production (A/B tests)
+* SageMaker Neo offers services to optimize your models to run on the edge
+* Neo compiled models can be deployed to AWS IoT Greengrass (edge device)
+* SageMaker supports general AWS security stuff - if using private VPCs you have to enable S3 access manually
+* SageMaker can use spot instances (via checkpoints) in order to lower costs
+* Another option is to use elastic inference (TensorFlow/MXNet only) and/or auto scaling to scale up/down while doing predictions
+* Serverless inference is another option to scale automatically
+* Inference pipelines allow you to chain 2-15 containers to create an inference pipeline
