@@ -28,8 +28,16 @@
     - Logarithmic: O(log(n))
     - Linear: O(n)
     - Log-linear: O(n * log(n))
-    - Quadratic: O(n^2)
-    - Cubic: O(n^3)
-    - Exponential: O(2^n)
+    - Quadratic: O(n**2)
+    - Cubic: O(n**3)
+    - Exponential: O(2**n)
     - Factorial: O(n!)
 * Search for _complexity graph_ to get a visualization of the aforementioned complexities
+
+
+## Logarithm
+
+* log(n) = y iff (if and only if) b**y = n
+* In the context of coding interviews we use the binary logarithm and assume b is equal to 2
+* When the input (n) to an algorithm with time complexity of O(log(n)) doubles, the number of operations to complete the algorithm (y) only increases by 1
+* Conversely, time complexity of O(log(n)) is pretty damn good
