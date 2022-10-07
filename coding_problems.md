@@ -28,7 +28,7 @@
 
 ### Sorted Squared Array
 
-#### Brute force solution 
+#### Brute Force Solution 
 
 * The brute force approach is simply squaring all elements and then sorting the array with an internal function
 * Note that the brute force solution will work also with an _unsorted_ input array 
@@ -48,3 +48,15 @@
     - Decrease the larger value index by 1
 * Return the new array containing the sorted squares of the input array
 * The optimal solution has time and space complexity of O(n)
+
+### Tournament Winner
+
+* Declare an empty string tracking the best team
+* Declare a hash table tracking teams and scores (use defaultdict(int) to handle missing keys)
+* Loop over index and values of the competitions array by enumerating it
+* Determine the winning team
+* Record the scores for the winning team in the hash table
+* Check if the score of the winning team is bigger than the score of the best team - if so, make the winning team the new best team
+* Return the name of the best team
+
+* The solution has time complexity of O(n) and space complexity of O(k) - where k is the number of teams in the competitions array
