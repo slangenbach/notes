@@ -3,6 +3,8 @@
 ## General
 
 * If an input is sorted or in a specific order this may mean that you can solve the problem in linear time
+* When dealing with an array problem, sort it and see if any patterns emerge
+* Always ask if you are allowed to do in-place operations to given inputs
 
 ## Arrays
 
@@ -58,5 +60,22 @@
 * Record the scores for the winning team in the hash table
 * Check if the score of the winning team is bigger than the score of the best team - if so, make the winning team the new best team
 * Return the name of the best team
-
 * The solution has time complexity of O(n) and space complexity of O(k) - where k is the number of teams in the competitions array
+
+### Non-constructible Change
+
+#### Brute Force Solution
+
+* 
+
+#### Optimal Solution
+
+* The key to solving this problem is realizing that we can not make change if the value of a coin is greater than the value of the change we can currently make + 1
+* Declare a variable tracking change and set it to 0
+* Sort the input array
+* Loop over the sorted array of coins:
+    - For each coin check if its value is > current change + 1
+    - If so, return current change + 1, as we are not able to make it
+    - If not, increment current change by the coin's value
+* Finally, return current change + 1
+* The solution has time complexity of O(n*log(n)) (because of sorting the input array) and space complexity of O(1)
