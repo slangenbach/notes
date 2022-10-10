@@ -3,8 +3,9 @@
 ## General
 
 * If an input is sorted or in a specific order this may mean that you can solve the problem in linear time
-* When dealing with an array problem, sort it and see if any patterns emerge
+* When dealing with an _array_ problem, sort it and see if any patterns emerge
 * Always ask if you are allowed to do in-place operations to given inputs
+* When dealing with _strings_, be mindful of the time complexity when building up strings one by one
 
 ## Arrays
 
@@ -64,12 +65,6 @@
 
 ### Non-constructible Change
 
-#### Brute Force Solution
-
-* 
-
-#### Optimal Solution
-
 * The key to solving this problem is realizing that we can not make change if the value of a coin is greater than the value of the change we can currently make + 1
 * Declare a variable tracking change and set it to 0
 * Sort the input array
@@ -79,3 +74,44 @@
     - If not, increment current change by the coin's value
 * Finally, return current change + 1
 * The solution has time complexity of O(n*log(n)) (because of sorting the input array) and space complexity of O(1)
+
+## Strings
+
+### Palindrome check
+
+* This problem can be solved in _several_ ways. 
+* One option is to compare the input string to its reverse, another is to to loop over each char of the string from start and end simultaneously and compare them
+* Declare two integers pointing to the start and end of the string
+* Loop over the string while start pointer is smaller than end pointer
+* Check if char at start pointer is not equal to char at end pointer
+    - If so, return False
+    - If not, increment start pointer by 1 and decrement end pointer by
+* Finally, return True
+* You may add a check condition which returns True if the string is of length 1
+
+### Caesar Cipher Encryptor
+
+* Solutions to this problem can be developed using built-in functions for unicode conversion and mapping letters in the alphabet to its positions (via a simple array or two hash maps)
+* This solution has time complexity of O(n) and space complexity of O(n) - O(m) if the alphabet is really large only
+
+#### Unicode conversion
+
+* Define a shift function taking char and key as input
+* Derive the key for conversion by converting char to its unicode value (via ord) and adding the value of key % 26 (26 being the length of the alphabet)
+* Modulo by 26 is done to handle edge cases for very large keys
+* Check if the new key is smaller or equal than 122 (value of "z" in unicode)
+    - If so, return the char at the new value (via chr)
+    - If not, return the char at 96 + new value % 122 (where 96 is unicode value of "a" and modulo by 122 is necessary to wrap around "z")
+* Finally apply the shift function to each letter in string and join it to an empty string
+
+#### Mapping letters to positions in the alphabet
+
+* Create an array containing the letters of the alphabet (via string.ascii_lowercase)
+* Declare a variable storing the length of the alphabet
+* Declare an empty array to build the new string
+* Loop over each letter in the string
+* Derive the new key by getting the index of the current char in the alphabet (via index) + key % length of the alphabet (handling edge cases as mentioned previously)
+* If the new key is smaller then the length of the alphabet, get the new letter by indexing the alphabet array at the new key position
+* Else get the new letter by indexing the array at position key % alphabet length
+* Add the new letter to the string array
+* Finally join the new string array to an empty string
