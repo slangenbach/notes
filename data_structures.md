@@ -56,3 +56,29 @@
     - Removing in the middle: O(n)
     - Removing at the end: O(1)
     - Copying: O(n)
+
+## Linked Lists
+
+* Linked lists exist as _singly_ and _doubly_ linked lists - _circular_ linked lists (not having a clear head or tail) also exist but are implemented as singly or doubly versions
+* Singly linked lists consist of nodes, where each node contains some value and a pointer to the next node in the list
+* The first node is called _head_, the last node _tail_
+* The pointer of the last node points to null
+* A singly linked lists usually only exposes the _head_ node to users
+* _Singly_ linked list time and space complexities are:
+    - Access head: O(1)
+    - Access tail: O(n)
+    - Access any other node: O(n)
+    - Insert/remove head: O(1)
+    - Insert/remove tail: O(n)
+    - Traverse: O(n)
+* Doubly linked lists also keep track of the _previous_ node by storing a pointer to it with each node
+* Consequently the prev pointer of the head node points to null
+* A doubly linked lists exposes both the _head_ and _tail_ node to users
+* _Doubly_ linked list time and space complexities are:
+    - Access head: O(1)
+    - Access tail: O(1)
+    - Access any other node: O(n)
+    - Insert/remove head: O(1)
+    - Insert/remove tail: O(1)
+    - Insert/remove any other node: O(n)
+    - Traverse: O(n)
