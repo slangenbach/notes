@@ -54,7 +54,16 @@ Notes on the short course from [DeepLearning.AI][1]
 * Auto-generate responses to text (emails, tickets, etc.) by instructing the model to assume a persona (service assistant) and outline the steps it should take.
 * Use `temperature` parameter to control randomness of model
 
+# Chat completion
 
-
+* You can use different _roles_ and pass them to `message` attribute of `ChatCompletion` class to control the conversation
+    - system: persona model assumes
+    - user: user
+    - assistant: model
+* In order to build a chatbot:
+    - specify detailed content for the _system_ role 
+    - capture input via _user_ role and add to context
+    - get response via _assistant_ role and add to context
+    - output response and start next iteration
 
 [1]: https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/
