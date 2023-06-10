@@ -35,6 +35,16 @@ Notes for the 2022 edition of the course.
 * GPUs are great a matrix multiplication
 * Read chapter 4 of Deep Learning for Coders with fastai & Pytorch book to get an even deeper understanding of the content in lesson 3
 
+## Lesson 4
+
+* >Transformers take good advantage of modern TPUs
+* Check out [Python for Data Analysis 3rd Edition][11]
+* [deberta-v3][12] is a good base model for NLP
+* Try [ULMFiT][13] for long documents (>= 2000 words) instead of transformers
+* Review [How and why to create a good validation set][14] and [The problem with metrics[...]][15] article
+* Tokenization transforms words in documents into a numeric representation
+* Always check you inputs (training data) and outputs (predictions)
+
 
 [1]: https://docs.fast.ai/tutorial.datablock.html
 [2]: https://timm.fast.ai/
@@ -46,3 +56,8 @@ Notes for the 2022 edition of the course.
 [8]: https://www.paperspace.com/
 [9]: https://ipywidgets.readthedocs.io/en/latest/examples/Using%20Interact.html
 [10]: http://matrixmultiplication.xyz/
+[11]: https://wesmckinney.com/book/
+[12]: https://huggingface.co/microsoft/deberta-v3-small
+[13]: https://arxiv.org/abs/1801.06146v5
+[14]: https://www.fast.ai/posts/2017-11-13-validation-sets.html
+[15]: https://www.fast.ai/posts/2019-09-24-metrics.html
