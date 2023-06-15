@@ -45,6 +45,31 @@ Notes for the 2022 edition of the course.
 * Tokenization transforms words in documents into a numeric representation
 * Always check you inputs (training data) and outputs (predictions)
 
+## Lesson 5
+
+### Neural Nets
+
+* >Take the log of things which can grow exponentially, i.e. money
+* > Add 1 to NAN values before taking the log
+* A tensor is just a matrix
+* Rank of a tensor referrs to its dimensions
+* Use mean absolute value to get started with a loss function
+* Methods with an underscore at the end, are executed _in-place_ in PyTorch
+* Use the sigmoid function to keep prediction between 0 and 1 if dealing with a binary target
+* >You need to know about what happens to the inputs in the first layer and what happens to the outputs in the last layer
+* Use the @ operator to mulitply matrics in PyTorch
+* You can slice a vector with _None_ to turn it into a matrix: vec[:, None]
+* Dive into hand-crafted deep learning code in PyTorch!
+* In 2023, tabular data still requires careful feature engineering and works well with tree-based models
+* Check out fastai's improved learning rate finder and choose on between slide and valley
+* Calling _test_dl on dataloaders will give you a pipeline containing all preprocessing steps from the original learner (which can then be used on the test set)
+
+### Random Forests
+
+* Use pandas categorical dtype when feeding categorical data into tree-based models
+* >A binary split is something that turns the rows of your data into two groups
+* >Always get a baseline with a "1R" model (decision tree with a single binary split)
+
 
 [1]: https://docs.fast.ai/tutorial.datablock.html
 [2]: https://timm.fast.ai/
