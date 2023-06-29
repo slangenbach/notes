@@ -50,7 +50,7 @@ Notes for the 2022 edition of the course.
 ### Neural Nets
 
 * >Take the log of things which can grow exponentially, i.e. money
-* > Add 1 to NAN values before taking the log
+* >Add 1 to NAN values before taking the log
 * A tensor is just a matrix
 * Rank of a tensor referrs to its dimensions
 * Use mean absolute value to get started with a loss function
@@ -68,7 +68,19 @@ Notes for the 2022 edition of the course.
 
 * Use pandas categorical dtype when feeding categorical data into tree-based models
 * >A binary split is something that turns the rows of your data into two groups
-* >Always get a baseline with a "1R" model (decision tree with a single binary split)
+* >Always get a baseline with a "OneR" model (decision tree with a single binary split)
+
+## Lesson 6
+
+* >A way to think about Gini: How likely is it, if pulling an item from a sample, that you pick the same item twice in a row?
+* Check out RandomForest feature importances to get a sense of the relevant features of a large data set
+* Using 100 trees is a good rule of thumb
+* Out-of-bag (OOB) error allows to check if a RandomForest is overfitting without using a separate validation set
+* [Partial Dependence Plots][16] are great, use them!
+* [Treeinterpreter][17] creates feature importance plots for a single prediction
+* Check out [explained.ai][18]
+* Check out [best vision models for fine-tuning][19] to select proper models for computer vision
+* Check out [test time augementation (TTA)][20]
 
 
 [1]: https://docs.fast.ai/tutorial.datablock.html
@@ -86,3 +98,8 @@ Notes for the 2022 edition of the course.
 [13]: https://arxiv.org/abs/1801.06146v5
 [14]: https://www.fast.ai/posts/2017-11-13-validation-sets.html
 [15]: https://www.fast.ai/posts/2019-09-24-metrics.html
+[16]: https://scikit-learn.org/stable/auto_examples/miscellaneous/plot_partial_dependence_visualization_api.html#sphx-glr-auto-examples-miscellaneous-plot-partial-dependence-visualization-api-py
+[17]: https://github.com/andosa/treeinterpreter
+[18]: https://explained.ai/
+[19]: https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning
+[20]: https://docs.fast.ai/learner.html#tta
