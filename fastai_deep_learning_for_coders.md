@@ -82,6 +82,13 @@ Notes for the 2022 edition of the course.
 * Check out [best vision models for fine-tuning][19] to select proper models for computer vision
 * Check out [test time augementation (TTA)][20]
 
+### Lesson 7
+
+* Gradient accumulation is a technique to run models requiring lager batch sizes on small GPUs
+* It works by calculating the loss for every item in the batch, but delaying the update of the weights (up to a certain threshold)
+
+
+### Lesson 8
 
 [1]: https://docs.fast.ai/tutorial.datablock.html
 [2]: https://timm.fast.ai/
