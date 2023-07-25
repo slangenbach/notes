@@ -29,6 +29,7 @@ Notes for the 2022 edition of the course.
 * Use `interact` from [ipywidgets][9] to get UI widgets to control input to a function
 * Gradient dissent is just calculating the loss a function, calculating its gradients and decreasing them slightly
 * ReLU returns 0 if linear function is <= 0 and the actual output of the function otherwise
+* >ReLU means replace negatives with zeros
 * >Deep Learning is using gradient dissent to set some parameters to make a wiggly function (which is just the addition of many RELUs - or something similar) to match your data
 * Start your project with simple, small models and spend time on the data - trying better architectures is the _very last step_
 * Check out [matrixmultiplication.xyz][10] for a visual walkthrough of matrix multiplication
@@ -82,13 +83,27 @@ Notes for the 2022 edition of the course.
 * Check out [best vision models for fine-tuning][19] to select proper models for computer vision
 * Check out [test time augementation (TTA)][20]
 
-### Lesson 7
+## Lesson 7
 
 * Gradient accumulation is a technique to run models requiring lager batch sizes on small GPUs
 * It works by calculating the loss for every item in the batch, but delaying the update of the weights (up to a certain threshold)
+* Use the [DataBlock API][21] to create DataLoaders having 2 targets
+* In order to create a multi-target model (that predicts two - or more - targets), create corresponding DataLoaders, adapt the error and loss functions (define the correct columns manually and create a combined loss functions adding up the results from the individual loss functions)
+* Use cross-entropy-loss when predicting multipe targets
+* Check out [Things that confused me about cross-entropy][22] article
+* >All of the loss functions in PyTorch have two versions, they come as classes (including params to tune) and functions
+
+### Collaborative Filtering
+
+* >An embedding is just looking something up in an array
+* Calculate latent factors (e.g. things that people like about movies):
+    - start off with _random weights_ for latent factors and users
+    - calculate the dot product between user preference and movies
+    - calculate root mean squared error between actuals and predictions
+    - optimize using SGD
 
 
-### Lesson 8
+## Lesson 8
 
 [1]: https://docs.fast.ai/tutorial.datablock.html
 [2]: https://timm.fast.ai/
@@ -110,3 +125,5 @@ Notes for the 2022 edition of the course.
 [18]: https://explained.ai/
 [19]: https://www.kaggle.com/code/jhoward/the-best-vision-models-for-fine-tuning
 [20]: https://docs.fast.ai/learner.html#tta
+[21]: https://docs.fast.ai/data.block.html
+[22]: https://chris-said.io/2020/12/26/two-things-that-confused-me-about-cross-entropy/
