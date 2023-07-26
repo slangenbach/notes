@@ -96,12 +96,16 @@ Notes for the 2022 edition of the course.
 ### Collaborative Filtering
 
 * >An embedding is just looking something up in an array
+* >Think of an embedding as being a computational shortcut for multiplying something with an one-hot encoded vector
 * Calculate latent factors (e.g. things that people like about movies):
     - start off with _random weights_ for latent factors and users
     - calculate the dot product between user preference and movies
     - calculate root mean squared error between actuals and predictions
     - optimize using SGD
-
+* Use [CollabDataLoaders][] when doing collaborative filtering
+* In order to create a model in PyTorch, create a class inheriting from Module and define the **forward** method - it will be called automatically when doing calculations on the model class
+* Weight decay (a.k.a. L2 regularization) is adding the sum of all the weights squared (multiplied by some small number) to your loss function - it encourages the weights to be as small as possible
+* Try a few multiples of 10 for weight decay parameter in collaborative filtering
 
 ## Lesson 8
 
@@ -127,3 +131,4 @@ Notes for the 2022 edition of the course.
 [20]: https://docs.fast.ai/learner.html#tta
 [21]: https://docs.fast.ai/data.block.html
 [22]: https://chris-said.io/2020/12/26/two-things-that-confused-me-about-cross-entropy/
+[23]: https://docs.fast.ai/collab.html#collabdataloaders
