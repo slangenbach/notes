@@ -12,15 +12,20 @@ content will have similar vectors
 * Vector databases contain embedding vectors and the corresponding chunk of text (which are usually smaller than
 the original document/text)
 * Querying a vector database means creating an embedding for the search query and retrieving n most-similar chunks of text
+* Chain-of-Thought Reasoning (ReAct)
 
-## Core functionality
+## Functionality
 
 * Check out [prompts for common operations][4]
-* Chain-of-Thought Reasoning (ReAct)
 * [Chains][5] and [memory][6] (especially [ConversationSummaryBufferMemory][7]) lend themselves to building chat interfaces
 * Use chains to use (multiple) output from one prompt as input to another prompt
 * Memory can also be [stored and retrieved][8] in/from external databases, i.e. [vector databases][9]
-* LangChain also supports developing Q&A applications over documents
+* LangChain also supports developing [Q&A applications over documents][10]
+* Use _QAGenerationChain_ to generate question/answer pairs automatically (using LLM)
+* Use _QAEvalChain_ to evaluate question/answer pairs automatically (using LLM)
+* Use `langchain.debug = True` to get debugging information
+* [Agents][11] use LLMs as a reasoning engine and can use [tools][12], i.e. a calculator or searching information on Wikipedia, to complete tasks
+* You can define your own tools by writing a Python function and decorating it with `@tool`
 
 
 [1]: https://www.deeplearning.ai/short-courses/langchain-chat-with-your-data/
@@ -32,3 +37,6 @@ the original document/text)
 [7]: https://python.langchain.com/docs/modules/memory/summary
 [8]: https://python.langchain.com/docs/modules/memory/vectorstore_retriever_memory
 [9]: https://python.langchain.com/docs/integrations/vectorstores/
+[10]: https://python.langchain.com/docs/use_cases/question_answering/
+[11]: https://python.langchain.com/docs/modules/agents/
+[12]: https://python.langchain.com/docs/integrations/tools/
