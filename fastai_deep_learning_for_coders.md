@@ -27,10 +27,10 @@ Notes for the 2022 edition of the course.
 * Inspect the contents of a model by accessing `learner.model` - use `learner.get_submodule()` to get information on a sub module
 * Get the categories of a multi-class prediction by accessing `learner.dls.vocab`
 * Use `interact` from [ipywidgets][9] to get UI widgets to control input to a function
-* Gradient dissent is just calculating the loss a function, calculating its gradients and decreasing them slightly
+* Gradient descent is just calculating the loss a function, calculating its gradients and decreasing them slightly
 * ReLU returns 0 if linear function is <= 0 and the actual output of the function otherwise
 * >ReLU means replace negatives with zeros
-* >Deep Learning is using gradient dissent to set some parameters to make a wiggly function (which is just the addition of many RELUs - or something similar) to match your data
+* >Deep Learning is using gradient descent to set some parameters to make a wiggly function (which is just the addition of many RELUs - or something similar) to match your data
 * Start your project with simple, small models and spend time on the data - trying better architectures is the _very last step_
 * Check out [matrixmultiplication.xyz][10] for a visual walkthrough of matrix multiplication
 * GPUs are great a matrix multiplication
@@ -53,17 +53,17 @@ Notes for the 2022 edition of the course.
 * >Take the log of things which can grow exponentially, i.e. money
 * >Add 1 to NAN values before taking the log
 * A tensor is just a matrix
-* Rank of a tensor referrs to its dimensions
+* Rank of a tensor refers to its dimensions
 * Use mean absolute value to get started with a loss function
 * Methods with an underscore at the end, are executed _in-place_ in PyTorch
 * Use the sigmoid function to keep prediction between 0 and 1 if dealing with a binary target
 * >You need to know about what happens to the inputs in the first layer and what happens to the outputs in the last layer
-* Use the @ operator to mulitply matrics in PyTorch
-* You can slice a vector with _None_ to turn it into a matrix: vec[:, None]
+* Use the @ operator to multiply matrices in PyTorch
+* You can slice a vector with _None_ to turn it into a matrix: `vec[:, None]`
 * Dive into hand-crafted deep learning code in PyTorch!
 * In 2023, tabular data still requires careful feature engineering and works well with tree-based models
-* Check out fastai's improved learning rate finder and choose on between slide and valley
-* Calling _test_dl on dataloaders will give you a pipeline containing all preprocessing steps from the original learner (which can then be used on the test set)
+* Check out fastai's improved learning rate finder and choose on between `slide` and `valley`
+* Calling `_test_dl` on dataloaders will give you a pipeline containing all preprocessing steps from the original learner (which can then be used on the test set)
 
 ### Random Forests
 
@@ -81,7 +81,7 @@ Notes for the 2022 edition of the course.
 * [Treeinterpreter][17] creates feature importance plots for a single prediction
 * Check out [explained.ai][18]
 * Check out [best vision models for fine-tuning][19] to select proper models for computer vision
-* Check out [test time augementation (TTA)][20]
+* Check out [test time augmentation (TTA)][20]
 
 ## Lesson 7
 
@@ -89,7 +89,7 @@ Notes for the 2022 edition of the course.
 * It works by calculating the loss for every item in the batch, but delaying the update of the weights (up to a certain threshold)
 * Use the [DataBlock API][21] to create DataLoaders having 2 targets
 * In order to create a multi-target model (that predicts two - or more - targets), create corresponding DataLoaders, adapt the error and loss functions (define the correct columns manually and create a combined loss functions adding up the results from the individual loss functions)
-* Use cross-entropy-loss when predicting multipe targets
+* Use cross-entropy-loss when predicting multiple targets
 * Check out [Things that confused me about cross-entropy][22] article
 * >All of the loss functions in PyTorch have two versions, they come as classes (including params to tune) and functions
 
@@ -102,12 +102,14 @@ Notes for the 2022 edition of the course.
     - calculate the dot product between user preference and movies
     - calculate root mean squared error between actuals and predictions
     - optimize using SGD
-* Use [CollabDataLoaders][] when doing collaborative filtering
+* Use [CollabDataLoaders][23] when doing collaborative filtering
 * In order to create a model in PyTorch, create a class inheriting from Module and define the **forward** method - it will be called automatically when doing calculations on the model class
 * Weight decay (a.k.a. L2 regularization) is adding the sum of all the weights squared (multiplied by some small number) to your loss function - it encourages the weights to be as small as possible
 * Try a few multiples of 10 for weight decay parameter in collaborative filtering
 
 ## Lesson 8
+
+* In collaborative filtering, items (movies) with a low/high bias are the ones that are particularly (un)popular with an audience (even )
 
 [1]: https://docs.fast.ai/tutorial.datablock.html
 [2]: https://timm.fast.ai/
