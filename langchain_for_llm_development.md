@@ -1,4 +1,4 @@
-# Langchain for LLM development
+# LangChain for LLM development
 
 Notes on the short course from [DeepLearning.AI][1]
 
@@ -28,7 +28,7 @@ the original document/text)
 * You can define your own tools by writing a Python function and decorating it with `@tool`
 
 
-[1]: https://www.deeplearning.ai/short-courses/langchain-chat-with-your-data/
+[1]: https://www.deeplearning.ai/short-courses/langchain-for-llm-application-development/
 [2]: https://python.langchain.com/docs/get_started/introduction.html
 [3]: https://python.langchain.com/docs/modules/model_io/
 [4]: https://ai.googleblog.com/2022/11/react-synergizing-reasoning-and-acting.html
