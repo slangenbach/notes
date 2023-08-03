@@ -102,14 +102,23 @@ Notes for the 2022 edition of the course.
     - calculate the dot product between user preference and movies
     - calculate root mean squared error between actuals and predictions
     - optimize using SGD
-* Use [CollabDataLoaders][23] when doing collaborative filtering
+* Use [CollabDataLoaders][23] and [collab_learner][24] (eventually with using a neural network with `nn=True` - useful if you have metadata about your items and users) when doing collaborative filtering
+* In collaborative filtering, items (movies) with a low/high bias are the ones that are particularly (un)popular with an audience (even though it loves the category of the item)
+* Use [get_emb_sz][25] to let fastai figure out the size of the embeddings you should use
 * In order to create a model in PyTorch, create a class inheriting from Module and define the **forward** method - it will be called automatically when doing calculations on the model class
 * Weight decay (a.k.a. L2 regularization) is adding the sum of all the weights squared (multiplied by some small number) to your loss function - it encourages the weights to be as small as possible
 * Try a few multiples of 10 for weight decay parameter in collaborative filtering
 
 ## Lesson 8
 
-* In collaborative filtering, items (movies) with a low/high bias are the ones that are particularly (un)popular with an audience (even )
+* Embeddings are not only useful for collaborative filtering, they are also used in NLP,
+and when working with tabular data
+* Check ouf fastai legacy notes for a discussion of convolutions, kernels, MaxPooling, Dropout, etc.
+* >Nowadays, we don't do MaxPooling anymore, we use stride convolutions and do average pooling
+* >Think of dropout as data augmentation for activations
+* It still makes sense to use MaxPooling if you don't have a good intuition about what's on an image 
+* Check out [Meta Learning book][26]
+
 
 [1]: https://docs.fast.ai/tutorial.datablock.html
 [2]: https://timm.fast.ai/
@@ -134,3 +143,6 @@ Notes for the 2022 edition of the course.
 [21]: https://docs.fast.ai/data.block.html
 [22]: https://chris-said.io/2020/12/26/two-things-that-confused-me-about-cross-entropy/
 [23]: https://docs.fast.ai/collab.html#collabdataloaders
+[24]: https://docs.fast.ai/collab.html#collabdataloaders
+[25]: https://docs.fast.ai/tabular.model.html#get_emb_sz
+[26]: https://www.goodreads.com/book/show/58213068-meta-learning
