@@ -40,6 +40,22 @@ Notes on the course from [HuggingFace][1]
 * Examples: BART
 * You can load an encoder and decoder model into an Encoder-Decoders model
 
+### Tokenizers
+
+* There exist 3 forms of tokenizers: word-based, character-based and subword-based tokenizers
+* Word-based tokenizers split text into words based on separators (spaces, punctuation)
+    - Each word gets a unique id
+    - Very similar words will be assigned different ids and the model will learn different embeddings for them (bad)
+    - Vocab of word-based tokenizers gets huge fast
+    - Many out-of-vocab tokens
+* Character-based tokenization splits text into characters
+    - Smaller vocab than word-based approach, yet fewer out of vocab words
+    - Approach might conflict with context size of language models (due to long sequences of characters provided as input)
+* Subword-based tokenization splits text into subwords
+    - Frequently used words are not split
+    - Rare words are decomposed into meaningful subwords
+    - Most SOTA models focused on English language use subword-based algorithm
+
 ### Package
 
 * Pipeline is most high-level function available and can be used for tasks such as
@@ -53,6 +69,8 @@ Notes on the course from [HuggingFace][1]
 * Pipeline can be used with any model suited to the task you want to perform
 * Pipeline consists of 3 stages: tokenize, model, postprocess
 * AutoTokenizer loads correct tokenizer for model
+* AutoTokenizer calls `tokenize` and `convert_tokens_to_ids` functions
+* AutoTokenizer uses padding to stitch together embedding vectors of different sizes. It uses an attention mask (tensor of 0 and 1) to indicate which tokens should be taken into account by self-attention and which should be ignored
 * AutoModel class only loads model without pre-training head (which can't be used for tasks directly) (use AutoModelFor<TASK> class instead)
 * During postprocessing logits are transformed into probabilities by calling SoftMax on them (use `model.config.id2label` to get them)
 
