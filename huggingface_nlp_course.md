@@ -74,5 +74,13 @@ Notes on the course from [HuggingFace][1]
 * AutoModel class only loads model without pre-training head (which can't be used for tasks directly) (use AutoModelFor<TASK> class instead)
 * During postprocessing logits are transformed into probabilities by calling SoftMax on them (use `model.config.id2label` to get them)
 
+## Datasets
+
+* Load datasets from the hub via `load_dataset(ll)`
+* Access train/valid/test datasets (and rows) by slicing the datasets object, i.e. `dataset["train"][:5]`
+* Use the `features` method to get info about columns
+* Use `map` method to apply preprocessing functions to all splits in the dataset (use `batched=True` to speed up)
+* Use `selected` method to apply transformation for part of index only
+ 
 
 [1]: https://huggingface.co/learn/nlp-course/chapter1/1
