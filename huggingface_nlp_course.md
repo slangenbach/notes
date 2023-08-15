@@ -56,6 +56,14 @@ Notes on the course from [HuggingFace][1]
     - Rare words are decomposed into meaningful subwords
     - Most SOTA models focused on English language use subword-based algorithm
 
+### Padding
+
+* Static padding adds padding tokens to all elements of the datasets. Doing so, ensures all
+batches will have the same shape, yet a lot of batches will contain columns with _useless_ pad tokens
+* Dynamic padding adds padding tokens to all elements in a batch. All elements in a batch will be of the 
+same shape, yet batches will be of different shapes which might not work well on all accelerators (TPUs)
+* Dynamic padding will usually be faster on CPUs _and_ GPUs (not TPUs)
+
 ### Package
 
 * Pipeline is most high-level function available and can be used for tasks such as
@@ -71,8 +79,19 @@ Notes on the course from [HuggingFace][1]
 * AutoTokenizer loads correct tokenizer for model
 * AutoTokenizer calls `tokenize` and `convert_tokens_to_ids` functions
 * AutoTokenizer uses padding to stitch together embedding vectors of different sizes. It uses an attention mask (tensor of 0 and 1) to indicate which tokens should be taken into account by self-attention and which should be ignored
+* Dynamic padding can be applied by passing the tokenizer to `DataCollatorWithPadding` class and using it
+as the `collate_fn` parameters within the PyTorch `DataLoader`
 * AutoModel class only loads model without pre-training head (which can't be used for tasks directly) (use AutoModelFor<TASK> class instead)
-* During postprocessing logits are transformed into probabilities by calling SoftMax on them (use `model.config.id2label` to get them)
+* During postprocessing logits (values of the last layer of a network before SoftMax is applied) are transformed into probabilities by calling SoftMax on them (use `model.config.id2label` to get them)
+* Use `np.argmax` to turn probabilities into class predictions
+* `Trainer` class enables training and fine-tuning of models
+* A training loop consists of model -> compute loss -> compute gradients -> use optimizer to update weights
+* Use `get_scheduler` function to do learning rate scheduling in PyTorch
+* Use the [accelerator][2] package to optimize training for different infrastructure:
+    - (Multiple) CPU, 
+    - (Multiple) GPU (one one or more machines)
+    - TPUs
+
 
 ## Datasets
 
@@ -81,6 +100,8 @@ Notes on the course from [HuggingFace][1]
 * Use the `features` method to get info about columns
 * Use `map` method to apply preprocessing functions to all splits in the dataset (use `batched=True` to speed up)
 * Use `selected` method to apply transformation for part of index only
+* Use `load_metric` function to get evaluation metrics of dataset and use it within custom evaluation function
  
 
 [1]: https://huggingface.co/learn/nlp-course/chapter1/1
+[2]: https://github.com/huggingface/accelerate
