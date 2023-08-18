@@ -95,13 +95,18 @@ as the `collate_fn` parameters within the PyTorch `DataLoader`
 
 ## Datasets
 
-* Load datasets from the hub via `load_dataset(ll)`
+* Load datasets from the hub via `load_dataset()` - you can also load custom datasets this way (from local disk or URL)
 * Access train/valid/test datasets (and rows) by slicing the datasets object, i.e. `dataset["train"][:5]`
 * Use the `features` method to get info about columns
 * Use `map` method to apply preprocessing functions to all splits in the dataset (use `batched=True` to speed up)
 * Use `selected` method to apply transformation for part of index only
 * Use `load_metric` function to get evaluation metrics of dataset and use it within custom evaluation function
+
+## Hub
+
+* Check out the [Hugging Face Hub Python library][3], especially for working in notebooks, managing repos and doing inference
  
 
 [1]: https://huggingface.co/learn/nlp-course/chapter1/1
 [2]: https://github.com/huggingface/accelerate
+[3]: https://huggingface.co/docs/huggingface_hub/quick-start
