@@ -101,7 +101,7 @@ as the `collate_fn` parameters within the PyTorch `DataLoader`
 * Use `map` method to apply preprocessing functions to all splits in the dataset (use `batched=True` to speed up)
 * Use `selected` method to apply transformation for part of index only
 * Use `load_metric` function to get evaluation metrics of dataset and use it within custom evaluation function
-* datasets provides various function to manipulate datasets, i.e. `shuffle` (incl. train/test split), `select`, `filter`, `rename_column`, `remove_clolumns`, `flatten` (to handle nested columns) and `map`
+* datasets provides various function to manipulate datasets, i.e. `shuffle` (incl. train/test split), `select`, `filter`, `rename_column`, `remove_columns`, `flatten` (to handle nested columns) and `map`
 * Use `dataset.set_format("pandas")` to interact with datasets as if it were pandas dataframes - there also exists `to_pandas` to cast to pandas datafames and `reset_format` to cast back
 * Use `save_to_disk` to save data in arrow format (conserves splits and metadata, useful for re-training) or `to_parquet` to save in parquet format (need to save and load each split individually)
 * datasets provides a streaming API to process _bigger-thank-disk_ datasets
@@ -115,6 +115,17 @@ as the `collate_fn` parameters within the PyTorch `DataLoader`
 * Tokenizer must be suitable to your training corpus (consider differences in language, style, characters, domain)
 * Use `train_new_from_iterator` in order to adapt an existing tokenizer to your training corpus
 * Fast tokenizers are backed by rust and take advantage of parallel processing of batches of text
+* Token classification: Use offset mapping to get the span of text for each label
+* Question answering: Model outputs two tensors (start- and end logits), containing the question and answer
+* Use `tokenizer.backend_tokenizer.normalizer.normalize_str` to check how a tokenizer normalizes an input string
+* _Pre-tokenization_ is applied after _normalization_ and applies rules to realize an initial split of text - use `pre_tokenize_str` to apply it
+* Common tokenization algorithms include (**TODO**: go back to videos for details):
+    - Byte Pair Encoding (BPE)
+    - Wordpiece tokenization
+    - Unigram tokenization
+* You can build your own tokenizer using the tokenizers library and the relevant normalizers, pre_tokenizers, models (trainers), post_processors and decoders
+
+
  
 
 [1]: https://huggingface.co/learn/nlp-course/chapter1/1
