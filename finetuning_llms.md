@@ -1,16 +1,18 @@
-# Finetuning Large Language Models
+# Fine-tuning Large Language Models
 
 Notes on the short course from [DeepLearning.AI][1]
 
 ## General
 
-* Rule of thumb for data required to finetune a model: 1000 inputs and outputs
+* Rule of thumb for data required to fine-tune a model: 1000 inputs and outputs
+* _Hydrating_ a prompt means adding data to it
+* Check out [llama][3] library from Lamini
 
-## Why should you finetune a model?
+## Why should you fine-tune a model?
 
-* By finetunig a model you can make it change its behavior and gain more knowledge
-* Prompting is great for generic projects and prototypes, while finetunig is suitable for domain-specific use cases.
-* Use finetuning to:
+* By fine-tuning a model you can make it change its behavior and gain more knowledge
+* Prompting is great for generic projects and prototypes, while fine-tuning is suitable for domain-specific use cases.
+* Use fine-tuning to:
     - supply a model with more data than what would fit in an (engineered) prompt
     - ensure consistent output
     - reduce hallucinations
@@ -19,16 +21,43 @@ Notes on the short course from [DeepLearning.AI][1]
     - reduce costs per request
     - provide guardrails
 
-
 ## Where does finetunig fit in the modeling process?
 
-* Finetuning for generative tasks is not well defined: 
-    - In contrast to finetuning a vision model, finetuning a generative model updates the weights of the entire model, not just a part of it
+* fine-tuning for generative tasks is not well defined: 
+    - In contrast to fine-tuning a vision model, fine-tuning a generative model updates the weights of the entire model, not just a part of it
     - The training objective does not change (next token prediction)
-* Finetuning usually happens after pretraining
-* Finetuning tasks include _extraction_ (same text in, less text out, i.e. reading) and _expansion_ (same text in, more text out, i.e. writing)
+* fine-tuning usually happens after pre-training
+* fine-tuning tasks include _extraction_ (same text in, less text out, i.e. reading) and _expansion_ (same text in, more text out, i.e. writing)
 
-##
+## What is instruction-tuning?
+
+* Instruction tuning teaches model to behave more like a chatbot
+* Either make use of existing Q&A data (FAQs, support conversations, chat logs) or use an LLM (c.f. [Alpaca][2]) to generate/turn data into the correct format
+
+## Data preparation
+
+* Get high quality, diverse and real data as instruction-response pairs
+    - Make sure to include pairs where the question is about something _not_ related to your issue, and the answers is something like: _Let's keep the discussion relevant to <your issue>_
+* Concatenate pairs and insert into a prompt template
+* Tokenize data applying padding (to make embeddings same length) and truncation (to respect maximum prompt length)
+* Split into training and tests set
+* Store result as JSON lines
+
+## Training
+
+* Use huggingface library and custom dataset to train (fine-tune) model
+
+## Evaluation
+
+* Human evaluation is often most reliable option
+* Alternative is to use LLM benchmarks, i.e. [ARC][4], [HellaSwag][5], [MMLU][6], [TruthfulQA][7], etc.
+* Error analysis is helpful to understand flaws (misspellings, overly lengthy answers, repetitions) of base models before fine-tuning
 
 
 [1]: https://www.deeplearning.ai/short-courses/finetuning-large-language-models/
+[2]: https://crfm.stanford.edu/2023/03/13/alpaca.html
+[3]: https://lamini-ai.github.io/python_library/
+[4]: https://deepgram.com/learn/arc-llm-benchmark-guide
+[5]: https://deepgram.com/learn/hellaswag-llm-benchmark-guide
+[6]: https://deepgram.com/learn/mmlu-llm-benchmark-guide
+[7]: https://openai.com/research/truthfulqa
