@@ -6,6 +6,7 @@ Notes on the short course from [DeepLearning.AI][1]
 
 * Rule of thumb for data required to fine-tune a model: 1000 inputs and outputs
 * _Hydrating_ a prompt means adding data to it
+* _p3.2xlarge_ instances are able to host 7B parameter models for inference (1B parameters for trainings)
 * Check out [llama][3] library from Lamini
 
 ## Why should you fine-tune a model?
@@ -28,6 +29,7 @@ Notes on the short course from [DeepLearning.AI][1]
     - The training objective does not change (next token prediction)
 * fine-tuning usually happens after pre-training
 * fine-tuning tasks include _extraction_ (same text in, less text out, i.e. reading) and _expansion_ (same text in, more text out, i.e. writing)
+* Expansion  tasks are usually much harder to accomplish than extraction tasks
 
 ## What is instruction-tuning?
 
@@ -46,11 +48,12 @@ Notes on the short course from [DeepLearning.AI][1]
 ## Training
 
 * Use huggingface library and custom dataset to train (fine-tune) model
+* Start with a small (400m - 1B parameters) model
 
 ## Evaluation
 
 * Human evaluation is often most reliable option
-* Alternative is to use LLM benchmarks, i.e. [ARC][4], [HellaSwag][5], [MMLU][6], [TruthfulQA][7], etc.
+* Alternative is to use LLM benchmarks, i.e. [ARC][4], [HellaSwag][5], [MMLU][6], [TruthfulQA][7], etc. (domain-specific models may however perform poorly on such general purpose tasks)
 * Error analysis is helpful to understand flaws (misspellings, overly lengthy answers, repetitions) of base models before fine-tuning
 
 
