@@ -15,7 +15,7 @@
 - Use state of node to reason about it
 - Use reducer function, e.g. `add` from operator or LangGraph's `add_messages`, to add messages to list of messages.
   Alternatively, use `MessageState` class to define state - it uses `add_message` under the hood
-- To add a message, i.e. a system message, to the state, simply wrap it in a list and add it with `state["messages"]`
+- To add a message, i.e. a system message, to the state, simply wrap it in a list and add it to `state["messages"]`
 - Use custom reducers to handle edge cases
 - Pass ids to messages in order to overwrite or delete them
 - Use `MemorySaver` to persist graph state (not required when using LangGraph Studio)
@@ -25,7 +25,7 @@
 - Use `stream(None, {thread_id})` to execute the graph from the current state
 - Use `stream(None, {checkpoint_id} {thread_id})` to **replay** (not execute) the graph from a specific checkpoint - we can also **execute** the graph from a checkpoint by updating the state with a new message and passing _id_ of an existing message. Doing so overrides the existing message and creates a new checkpoint and ultimately makes the graph execute.
 - When using the SDK you can simply supply a _checkpoint_id_ to get the same behavior
-- Use pydantic BaseModel to define state to enforce types
+- Use Pydantic BaseModel to define state to enforce types
 - Use input, output and overall state to filter state, i.e. when accepting and returning messages to the user (c.f. `StateGraph(OverallState, input=InputState, output=OutputState)`)
 - Reduce the number of messages sent to a model during a long conversation in order to reduce latency and costs.
   - Use `trim_messages` to reduce the number of messages send to the model
@@ -47,6 +47,7 @@
 
 - Top level and sub graphs communicate with each other via overlapping keys in the state
 - In order to write to the same key, we need to define a reducer for the key, i.e. add, for both _input_ and _output_ keys
+- Subgraphs are added to top level graphs via `add_node(subgraph_name, subgraph.compile())`
 - Subgraphs makes traces much easier to readable
 
 ### Map Reduce
@@ -75,12 +76,16 @@
 ## Misc
 
 - We can identify messages by using the _name_ field in `AiMessage` and `HumanMessage`
-- We can force a model to format its output by calling `with_structured_output(SCHEMA).invoke()` and providing a pydantic Schema
+- We can force a model to format its output by calling `with_structured_output(SCHEMA).invoke()` and providing a Pydantic Schema
 - Use `Image(graph.get_graph().draw_mermaid_png())` to get a visual representation of the graph in a notebook (import `Image` from `IPython.display)
-- Use pydantic Fields to add descriptions to state schemas
+- Use Pydantic Fields to add descriptions to state schemas
 
 ## Resources
 
-- LangGraph Studio
-- LangGraph SDK
-- Pydantic
+- [LangGraph Studio][1]
+- [LangGraph SDK][2]
+- [Pydantic][3]
+
+[1]: https://studio.langchain.com
+[2]: https://langchain-ai.github.io/langgraph/concepts/sdk/
+[3]: https://docs.pydantic.dev/latest/
