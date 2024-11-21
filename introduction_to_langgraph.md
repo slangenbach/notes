@@ -31,6 +31,24 @@
   - Use `trim_messages` to reduce the number of messages send to the model
   - Alternatively, create a summary of the conversation after n messages, trim all but the last two messages and continue
 
+### Memory
+
+- Think about memory in the context of an agent in three dimensions: 
+  - Semantic: Facts about a user
+  - Episodic: Past agent actions
+  - Procedural: Instructions
+- Semantic memory can be implemented by persisting data in an (external) data store, i.e. a table in a database
+- Episodic memory can be implemented via passing prior conversation history to the agent as context
+- Procedural memory can be implemented via system prompts
+- Threads are similar to short-term memory. They store conversation history between user and agent in a single session via **checkpointers**. 
+The user can come back to the session and the history will be preserved
+- Alternatively, we can mimic long-term memory by using **stores**. Long-term-memory is available *across** sessions and is well suited to save and retrieve general user
+information
+- Memory may be implemented as a profile (single, key-value store of facts about the user) or as a collection (list of facts about the user)
+- Check out `InMemoryStore` to get started. Further, try creating and updating memory by calling `.with_structured_output` and passing the a schema for the (user) profile we want to create
+**plus** the message history. Also check out [trustcall][4] which solves reliability and performance issues with the former approach (use *enable_inserts=True* when working with collections).
+- We can update memory in- or out-of-process
+
 ### Human-in-the-loop (HITL)
 
 - HITL can be used for approval, e.g. before calling tools, debugging and editing graph state
@@ -79,6 +97,7 @@
 - We can force a model to format its output by calling `with_structured_output(SCHEMA).invoke()` and providing a Pydantic Schema
 - Use `Image(graph.get_graph().draw_mermaid_png())` to get a visual representation of the graph in a notebook (import `Image` from `IPython.display)
 - Use Pydantic Fields to add descriptions to state schemas
+- Access and print messages when streaming via `event["messages"][-1].pretty_print()`
 
 ## Resources
 
@@ -89,3 +108,4 @@
 [1]: https://studio.langchain.com
 [2]: https://langchain-ai.github.io/langgraph/concepts/sdk/
 [3]: https://docs.pydantic.dev/latest/
+[4]: https://github.com/hinthornw/trustcall
