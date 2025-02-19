@@ -6,6 +6,7 @@ Notes on the [course][1] from Udemy.
 
 - Use `terraform show` to get a full overview of the state, or `terraform state list` to only list resources
 - Use `terraform providers` to get a list of required providers
+- Providers support aliases to manage multiple configurations of the same provider
 - Use data blocks to fetch data from provider resources
 - Use locals to define variables for expressions
 - Provisioners (local-exec, remote-exec, file) are considered a last resort, use configuration management tools like Ansible instead
@@ -17,7 +18,6 @@ Notes on the [course][1] from Udemy.
 - Use `terraform plan -refresh-only` to conduct drift detection
 - Local state is stored in a file named `terraform.tfstate` by default
 - AWS, Azure and GCP provide backends which support locking and state versioning
-- Terraform Cloud is an enhanced backend with stores state and run operations remotely
 - We can migrate state to a new backend using `terraform init -migrate-state`
 - Use partial backend configuration files to work around the lack of support for variables in backend configuration
 - Consider pulling secrets from third party solutions like AWS SecretsManager, Azure KeyVault or 1Password
@@ -27,9 +27,17 @@ Notes on the [course][1] from Udemy.
 - Read the [Terraform style guide][3]
 - Use `terraform graph` and [graphviz][4] to visualize the dependency graph
 
+## Terraform Cloud
+
+- Terraform Cloud is an enhanced backend with stores state and run operations remotely. It also features fine-grained access control (via Sentinel), policy enforcement, web UI, integration with version control systems and a private module registry
+- Variable sets allow us to reuse variables across workspaces
+- Sentinel has three policy enforcement levels: advisory (allowed to fail), soft-mandatory (must be overwritten when failing) and hard-mandatory
+
 ## Exam
 
-- Take note of the order of precedence of variables (`-var` flags > `terraform.tfvars` > environment variables > default values)
+- Take note of the order of precedence of variables (`-var` flags > `terraform.tfvars` > `TF_VAR` environment variables > default values)
+- Sentinel runs before configuration is applied, and can be used to enforce policies
+- Terraform uses state to map resources to the real world
 - Check if TLS provider is relevant for the exam
 
 
