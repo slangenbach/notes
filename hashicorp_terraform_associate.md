@@ -4,7 +4,7 @@ Notes on the [course][1] from Udemy.
 
 ## General
 
-- Use `terraform show` to get a full overview of the state, or `terraform state list` to only list resources
+- Use `terraform show` to get a full *overview* of the state, or `terraform state list` to only list resources
 - Use `terraform providers` to get a list of required providers
 - Providers support aliases to manage multiple configurations of the same provider
 - Use data blocks to fetch data from provider resources
@@ -12,7 +12,8 @@ Notes on the [course][1] from Udemy.
 - Provisioners (local-exec, remote-exec, file) are considered a last resort, use configuration management tools like Ansible instead
 - Use `terraform taint <RESOURCE_NAME>` to mark a resource for recreation without changing source code
 - Use `terraform import <RESOURCE_NAME> <RESOURCE_ID>` to import existing resources
-- Workspaces can be used to manage different environments, but as state is stored in a single state file, they should be used with caution. Consider using dedicated state files for each environment instead. 
+- Mind that, before importing, the resource must be defined in the configuration
+- Workspaces can be used to manage different environments, as state is stored in separate state file. They should however be used with caution.
 - Set the environment variable `TF_LOG` to *DEBUG* or *TRACE* to get more detailed logs. Set `TF_LOG_PATH` to a file to save logs to a file.
 - `terraform validate` supports a `--json` flag to provide JSON output to be used in CI
 - Use `terraform plan -refresh-only` to conduct drift detection
@@ -30,6 +31,8 @@ Notes on the [course][1] from Udemy.
 ## Terraform Cloud
 
 - Terraform Cloud is an enhanced backend with stores state and run operations remotely. It also features fine-grained access control (via Sentinel), policy enforcement, web UI, integration with version control systems and a private module registry
+- Terraform Cloud private registry can be used to limit access to approved modules only
+- Variables can also be applied to just a single run within a workspace
 - Variable sets allow us to reuse variables across workspaces
 - Sentinel has three policy enforcement levels: advisory (allowed to fail), soft-mandatory (must be overwritten when failing) and hard-mandatory
 
@@ -38,7 +41,19 @@ Notes on the [course][1] from Udemy.
 - Take note of the order of precedence of variables (`-var` flags > `terraform.tfvars` > `TF_VAR` environment variables > default values)
 - Sentinel runs before configuration is applied, and can be used to enforce policies
 - Terraform uses state to map resources to the real world
-- Check if TLS provider is relevant for the exam
+- Use `terraform init` and `terraform get` to download modules
+- Use `terraform workspace create` to create new workspaces
+- Use `terraform workspace select` to switch workspaces
+- *github* is not a valid backend type
+- Use `terraform force-unlock` to unlock a locked state
+- Per default Terraform creates 10 resources in parallel
+- Per default Terraform uses 2 spaces for indentation
+- Use `terraform apply -replace=<RESOURCE_NAME>` to replace a single resource
+- Terraform is a **immutable**, declarative language based on HCL and optionally JSON
+- Secrets will always be stored unencrypted in the state file, no matter the provider
+- Terraform is available on Windows, Linux and MacOS and FreeBSD :eyes:
+- The local state for **workspaces** is stored in `terraform.tfstate.d/<WORKSPACE_NAME>`
+- Inspection of cloud resources is not a feature of Terraform state
 
 
 [1]: https://www.udemy.com/course/terraform-hands-on-labs
