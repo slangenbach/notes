@@ -10,7 +10,7 @@ Notes on the [course][1] from Udemy.
 - Use data blocks to fetch data from provider resources
 - Use locals to define variables for expressions
 - Provisioners (local-exec, remote-exec, file) are considered a last resort, use configuration management tools like Ansible instead
-- Use `terraform taint <RESOURCE_NAME>` to mark a resource for recreation without changing source code
+- Use `terraform taint <RESOURCE_NAME>` to mark a resource for recreation without changing source code (note that this has been replaced by `terraform apply -replace=<RESOURCE_NAME>`)
 - Use `terraform import <RESOURCE_NAME> <RESOURCE_ID>` to import existing resources
 - Mind that, before importing, the resource must be defined in the configuration
 - Workspaces can be used to manage different environments, as state is stored in separate state file. They should however be used with caution.
@@ -44,6 +44,7 @@ Notes on the [course][1] from Udemy.
 - Use `terraform init` and `terraform get` to download modules
 - Use `terraform workspace create` to create new workspaces
 - Use `terraform workspace select` to switch workspaces
+- Use `terraform workspace show` to show the current workspace
 - *github* is not a valid backend type
 - Use `terraform force-unlock` to unlock a locked state
 - Per default Terraform creates 10 resources in parallel
@@ -54,7 +55,13 @@ Notes on the [course][1] from Udemy.
 - Terraform is available on Windows, Linux and MacOS and FreeBSD :eyes:
 - The local state for **workspaces** is stored in `terraform.tfstate.d/<WORKSPACE_NAME>`
 - Inspection of cloud resources is not a feature of Terraform state
-
+- In both Terraform OSS and HCL workspaces provide similar functionality
+- While it's best practices to declare provider blocks, it's not requirement
+- Providers can be configured using the `provider` block only
+- Using `terraform console` locks the state file
+- Use `terraform apply -refresh=false` to skip refreshing the state during apply
+- Use `terraform output` to get the value of outputs variables
+- Use `[*]` to get the value of all values of a resource
 
 [1]: https://www.udemy.com/course/terraform-hands-on-labs
 [2]: https://developer.hashicorp.com/terraform/language/functions
