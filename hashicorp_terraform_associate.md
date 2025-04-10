@@ -10,7 +10,7 @@ Notes on the [course][1] from Udemy.
 - Use data blocks to fetch data from provider resources
 - Use locals to define variables for expressions
 - Provisioners (local-exec, remote-exec, file) are considered a last resort, use configuration management tools like Ansible instead
-- Use `terraform taint <RESOURCE_NAME>` to mark a resource for recreation without changing source code (note that this has been replaced by `terraform apply -replace=<RESOURCE_NAME>`)
+- Use `terraform taint <RESOURCE_NAME>` to mark a resource for recreation without changing source code (note that this has been **replaced by** `terraform apply -replace=<RESOURCE_NAME>`)
 - Use `terraform import <RESOURCE_NAME> <RESOURCE_ID>` to import existing resources
 - Mind that, before importing, the resource must be defined in the configuration
 - Workspaces can be used to manage different environments, as state is stored in separate state file. They should however be used with caution.
