@@ -33,7 +33,9 @@ Notes on the [course][1] from Udemy.
 - We refer to external stages using @STAGE_NAME
 - Data can be transformed during loading into stages by using SQL syntax (and certain SQL functions) within the `FROM` clause of the `COPY INTO` command
 - We can also only load data into certain columns when copying data into a stage
-- We can handle errors during data ingestion using the `ON_ERROR` keyword. Options include _ABORT_STATEMENT_, _SKIP_FILE_ (we can also specify the threshold of errors at which we skip a file using SKIP_FILE_<THRESHOLD>) and _CONTINUE_ 
-- Stages and file formats can be saved into dedicated objects within dedicated schemas within a dedicatd databases (e.g. MANAGE_DB)
+- We can handle errors during data ingestion using the `ON_ERROR` keyword (which is a copy option). Options include _ABORT_STATEMENT_, _SKIP_FILE_ (we can also specify the threshold of errors at which we skip a file using SKIP_FILE_<THRESHOLD>) and _CONTINUE_ 
+- Stages and file formats can be saved into dedicated objects within dedicated schemas within a dedicated databases (e.g. MANAGE_DB)
+- Use the copy option `VALIDATION_MODE = RETURN_ERRORS | RETURN_N_ROWS` to validate data without loading it
+
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
