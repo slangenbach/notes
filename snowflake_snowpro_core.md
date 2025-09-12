@@ -4,6 +4,10 @@ Notes on the [course][1] from Udemy.
 
 ## General
 
+- Snowflake offers Standard, Enterprise,  Business Critical and Virtual Private editions
+- Enterprise offers multi-cluster warehouses, 90 day time travel, and other features
+- Business Critical
+- Virtual Private edition is made up of a dedicated services and needs to be setup on a by case basis
 
 ## Architecture
 
