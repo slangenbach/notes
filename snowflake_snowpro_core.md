@@ -35,11 +35,24 @@ Notes on the [course][1] from Udemy.
 - External stages refer to object storage of a cloud provider, e.g. AWS S3 bucket
 - Internal stages refer to local file storage
 - We refer to external stages using @STAGE_NAME
+
+### Ingesting data using the COPY command
+
 - Data can be transformed during loading into stages by using SQL syntax (and certain SQL functions) within the `FROM` clause of the `COPY INTO` command
 - We can also only load data into certain columns when copying data into a stage
 - We can handle errors during data ingestion using the `ON_ERROR` keyword (which is a copy option). Options include _ABORT_STATEMENT_, _SKIP_FILE_ (we can also specify the threshold of errors at which we skip a file using SKIP_FILE_<THRESHOLD>) and _CONTINUE_ 
 - Stages and file formats can be saved into dedicated objects within dedicated schemas within a dedicated databases (e.g. MANAGE_DB)
 - Use the copy option `VALIDATION_MODE = RETURN_ERRORS | RETURN_N_ROWS` to validate data without loading it
+- We can _work_ with errors by creating an error table and retrieving rejected errors of the last query via `SELECT rejected_record from TABLE(result_scan(last_query_id()))`
+- If we would like to validate entire files, we can set the `RETURN_FAILED_ONLY= = TRUE`. Doing so will only return files which could not be processed. If used with `ON_ERROR = CONTINUE` however, all files will be processed, and only rows containing errors will be skipped
+- We can also limit the amount of data loaded during a COPY operation by setting `SIZE_LIMIT` to the maximum number of bytes allowed
+- Using `TRUNCATECOLUMNS = TRUE` we can truncate text strings exceeding column length
+- Setting `FORCE = TRUE` reloads all data during a COPY operation
+- The local load history is available from the `INFORMATION_SCHEMA.LOAD_HISTORY` view, the global history is via `SNOWFLAKE_DB.ACCOUNT_USAGE.LOAD_HISTORY`
 
+### Handling semi-structured data
+
+- Loading raw data requires a stage and a table with a single column of the _variant_ data type
+- We can select attributes of JSON objects loaded into a table of _variant_ type using the syntax `SELECT <COLUMN_NAME>:<ATTRIBUTE>::<DATA_TYPE> FROM <TABLE_NAME>`
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
