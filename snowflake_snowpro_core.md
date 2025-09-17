@@ -53,6 +53,12 @@ Notes on the [course][1] from Udemy.
 ### Handling semi-structured data
 
 - Loading raw data requires a stage and a table with a single column of the _variant_ data type
-- We can select attributes of JSON objects loaded into a table of _variant_ type using the syntax `SELECT <COLUMN_NAME>:<ATTRIBUTE>::<DATA_TYPE> FROM <TABLE_NAME>`
+- We can select (JSON) objects and their attributes loaded into a table of _variant_ type using the syntax `SELECT <COLUMN_NAME>:<OBJECT>.<ATTRIBUTE>::<DATA_TYPE> FROM <TABLE_NAME>`
+    - We can also use the index of the column instead of the name using `$<INDEX_NUMBER>`
+    - you may quote object and attribute with double quotes if it contains spaces
+- Use the `flatten` function to flatten nested JSON objects.
+- Use `METADATA$<ATTRIBUTE>` to query metadata from a file
+
+
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
