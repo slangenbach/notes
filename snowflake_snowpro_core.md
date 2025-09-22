@@ -59,6 +59,23 @@ Notes on the [course][1] from Udemy.
 - Use the `flatten` function to flatten nested JSON objects.
 - Use `METADATA$<ATTRIBUTE>` to query metadata from a file
 
+### Ingesting data from AWS S3
+
+- Snowflake demands S3FullAccess role and trust relationship between AWS Account holding data and Snowflake, to interact with S3
+- Interaction is facilitated via storage integration object
+
+## Performance Optimization
+
+- As Snowflake architecture is very different from traditional databases, performance optimization centers around choosing *appropriate data types*, *sizing warehouses* correctly (e.g. by scaling up or out) and *caching*
+- Results are cached per warehouse and stored for 24 hours or until underlying data changes
+- Snowflake can cluster tables (~ add an index) to improve performance, yet is only makes sense for very large tables (multiple TBs)
+
+
+## Roles and Permissions
+
+- We can create roles via `CREATE ROLE <ROLE_NAME>`
+- Roles can be granted privileges using `GRANT USAGE ON <OBJECT> <OBJECT_NAME> TO ROLE <ROLE_NAME>`
+
 
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
