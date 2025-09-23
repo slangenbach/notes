@@ -49,6 +49,7 @@ Notes on the [course][1] from Udemy.
 - Using `TRUNCATECOLUMNS = TRUE` we can truncate text strings exceeding column length
 - Setting `FORCE = TRUE` reloads all data during a COPY operation
 - The local load history is available from the `INFORMATION_SCHEMA.LOAD_HISTORY` view, the global history is via `SNOWFLAKE_DB.ACCOUNT_USAGE.LOAD_HISTORY`
+- Data can be *unloaded* form a table into a stage (BLOB storage) by using the `COPY ` command and switching source and destination, e.g. `COPY INTO @<STAGE_NAME> FROM <TABLE_NAME>`
 
 ### Handling semi-structured data
 
@@ -61,8 +62,16 @@ Notes on the [course][1] from Udemy.
 
 ### Ingesting data from AWS S3
 
-- Snowflake demands S3FullAccess role and trust relationship between AWS Account holding data and Snowflake, to interact with S3
-- Interaction is facilitated via storage integration object
+- Snowflake demands *S3FullAccess* role and trust relationship between AWS Account holding data and Snowflake, to interact with S3
+- Interaction is facilitated via storage integration object, but we still need a Stage object for the actual interaction
+
+### Ingesting data from Azure Storage Accounts
+
+- Snowflake demands the *Storage BLOB Data Contributor* role and Azure Consent to interact with Storage Accounts
+
+### Ingesting data from GCP Buckets
+
+- Snowflake demands and the *Cloud Storage Admin* role and a GCP Service Account to interact with GCP Buckets
 
 ## Performance Optimization
 
@@ -70,12 +79,22 @@ Notes on the [course][1] from Udemy.
 - Results are cached per warehouse and stored for 24 hours or until underlying data changes
 - Snowflake can cluster tables (~ add an index) to improve performance, yet is only makes sense for very large tables (multiple TBs)
 
-
 ## Roles and Permissions
 
 - We can create roles via `CREATE ROLE <ROLE_NAME>`
 - Roles can be granted privileges using `GRANT USAGE ON <OBJECT> <OBJECT_NAME> TO ROLE <ROLE_NAME>`
 
+## Snowpipe
+
+- Snowpipe monitors buckets for new files and automatically loads and transforms them
+- It is build on serverless infrastructure and does not use warehouses (seems like S3 Object Lambda in disguise)
+- Using Snowpipe involves creating an external stage, using the `COPY` command, creating the pipe and setting up a (S3) notification (Queue, EventGridand event subscription with *Storage Queue Data Contributor* role for Azure) to trigger the pipe
+- We create pipes using `CREATE OR REPLACE pipe <PIPE_NAME> AS COPY INTO <TABLE_NAME> FROM @<STAGE_NAME>`
+- Make sure to set `AUTO_INGEST = TRUE` in order to load files automatically
+- Use the `NOTIFICATION_CHANNEL` property of the pipe as the source (SQS Queue) for the S3 event notification
+- We can list all pipes using `SHOW PIPES`
+- We can update pipe using `ALTER pipe <PIPE_NAME> refresh`
+- We can get the status of a pipe using `SELECT SYSTEM$PIPE_STATUS('<PIPE_NAME>')`
 
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
