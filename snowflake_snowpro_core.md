@@ -96,5 +96,13 @@ Notes on the [course][1] from Udemy.
 - We can update pipe using `ALTER pipe <PIPE_NAME> refresh`
 - We can get the status of a pipe using `SELECT SYSTEM$PIPE_STATUS('<PIPE_NAME>')`
 
+## Time Travel
+
+- Time allows us to access historical data, e.g. data which has been delete or updated. It also allows us to restore dropped schemas, tables databases
+- We can use time travel by either querying data at a specific time stamp via `SELECT * FROM <TABLE_NAME> BEFORE (TIMESTAMP => <TIMESTAMP>)`, or offset via `SELECT * FROM <TABLE_NAME> AT (OFFSET => <NEGATIVE_OFFSET_IN_SECONDS>)`, or before a certain query id via `SELECT * FROM <TABLE_NAME> BEFORE (STATEMENT => <QUERY_ID>)`
+- Additionally entire objects can be recovered via `UNDROP <OBJECT> <OBJECT_NAME>`
+- Always create a backup table with the results from time travel, then truncate the table we need to fix, and finally insert data from the backup table into the truncated table
+- If we need to undrop a table that already exits, e.g. because it has been recreated, try to rename the existing tables before undropping
+
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
