@@ -114,5 +114,16 @@ Notes on the [course][1] from Udemy.
 - Data can be recovered for up 7 days after the time travel period has passed (for permanent tables)
 - Recovery is done via Snowflake support
 
+## Table Types
+
+- Tables types include permanent, transient and temporary
+- Databases can only be permanent or transient
+- All table types offer time travel, but only *permanent* tables are **fail safe**
+- Transient tables only allow time travel for 1 day
+- Temporary tables only exist in the current session
+- The type of table is indicated in the *kind* column returned by `SHOW TABLES`
+
+## Zero-Copy Cloning
+
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
