@@ -99,10 +99,20 @@ Notes on the [course][1] from Udemy.
 ## Time Travel
 
 - Time allows us to access historical data, e.g. data which has been delete or updated. It also allows us to restore dropped schemas, tables databases
+- The retention period for time travel depends on the Snowflake editions (default is 1 day, 1 day is also the max for standard, whereas 90 days is the max for other editions)
+- We can modify the retention period for a table by editing the `DATA_RETENTION_TIME_IN_DAYS` property
+
 - We can use time travel by either querying data at a specific time stamp via `SELECT * FROM <TABLE_NAME> BEFORE (TIMESTAMP => <TIMESTAMP>)`, or offset via `SELECT * FROM <TABLE_NAME> AT (OFFSET => <NEGATIVE_OFFSET_IN_SECONDS>)`, or before a certain query id via `SELECT * FROM <TABLE_NAME> BEFORE (STATEMENT => <QUERY_ID>)`
 - Additionally entire objects can be recovered via `UNDROP <OBJECT> <OBJECT_NAME>`
 - Always create a backup table with the results from time travel, then truncate the table we need to fix, and finally insert data from the backup table into the truncated table
 - If we need to undrop a table that already exits, e.g. because it has been recreated, try to rename the existing tables before undropping
+- Time travel costs results from additional storage. You can get additional information on storage used for different features via `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.TABLES_STORAGE_METRICS`
+
+## Fail Safe
+
+- Fail safe is the disaster recovery feature in Snowflake
+- Data can be recovered for up 7 days after the time travel period has passed (for permanent tables)
+- Recovery is done via Snowflake support
 
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
