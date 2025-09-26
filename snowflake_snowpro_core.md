@@ -125,5 +125,23 @@ Notes on the [course][1] from Udemy.
 
 ## Zero-Copy Cloning
 
+- Snowflake supports cloning of various objects (databases, schemas, tables, stream, file formats, sequences, tasks - and with some limitations also stages and pipes) via the `CLONE` keyword
+- If we clone an object, all of its child objects are also cloned
+- Cloning is done via zero-copy, meaning only a snapshot of the metadata is duplicated, not the data itself
+- Note that, while all child objects will inherit their privileges, the parent object will not
+- In order to clone tables, we need *SELECT* , for pipes, streams and task we need *OWNER*, and for all other objects we need *USAGE* 
+privileges
+- We can combine cloning and time travel
+
+### Swapping
+
+- We can also use swapping to promote tables and schemas to production.
+- Like copying, swapping only affects metadata
+- The syntax to swap a table is `ALTER TABLE <TABLE_NAME> SWAP WITH <TABLE_NAME_TO_SWAP_WITH>`
+
+## Data Sharing
+
+tbd
+
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
