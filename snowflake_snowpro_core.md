@@ -141,7 +141,26 @@ privileges
 
 ## Data Sharing
 
-tbd
+- Snowflake enables object sharing (tables, external tables, secure views, secure materialized views, secure UDFs) between accounts
+- Sharing data does not copy data, instead the producer account grants *read-only* privileges to the consumer account
+- Sharing is available for editions except the virtual private edition
+- To create a share, first create it via `CREATE SHARE <SHARE_NAME>`. Then grant privileges for individual objects to the share, i.e. `GRANT USAGE ON DATABASE <DATABASE_NAME> TO SHARE <SHARE_NAME`. Afterwards add consumers to the share via `ALTER SHARE <SHARE_NAME> ADD ACCOUNT <ACCOUNT_ID>`. Finally import the share within the consumer account via `CREATE <OBJECT> <OBJECT_NAME> FROM SHARE <SHARE_NAME>
+- Consumers do not necessarily need dedicated Snowflake accounts, as shares can also be made available via *reader* accounts
+- Changes of objects within a share object are reflected to consumers immediately. However we might need to explicitly grant permissions to interact with shared objects.
+- We can easily grant access to all schemas/tables of a shared database via `GRANT SELECT ON ALL TABLES IN SCHEMA/DATABASE <SCHEMA_NAME/DATABASE_NAME> TO SHARE <SHARE_NAME>`
+
+### Views
+
+- Always use secure views instead of regular views, to avoid sharing sensitive (meta-) data (for example definition data) by accident
+- Secure views are created via `CREATE OR REPLACE SECURE VIEW <VIEW_NAME> AS SELECT [...]`
+- Secure view can reference data from several databases, if all database have granted reference usage on the share via `GRANT REFERENCE_USAGE ON DATABASE <DATABASE_NAME> TO SHARE <SHARE_NAME>`
+
+## Data Sampling
+
+- Sampling data is useful to enable cost-efficient development on very large tables
+- Sampling can be done via the *row* (Bernoulli) or *block* (System) method.
+- The *row* method samples every with a given percentage, while the method samples every block (micro-partition)
+- The block method is recommended for very large tables
 
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
