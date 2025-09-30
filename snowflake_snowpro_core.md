@@ -162,5 +162,29 @@ privileges
 - The *row* method samples every with a given percentage, while the method samples every block (micro-partition)
 - The block method is recommended for very large tables
 
+## Tasks
+
+- Use tasks to schedule SQL statements or stored procedures
+- Tasks can be created via `CREATE OR REPLACE TASK <TASK_NAME> SCHEDULE = '<SCHEDULE_STRING>' AS <SQL_QUERY>` - where <SCHEDULE_STRING> can be an interval or a CRON job, i.e. `USING CRON minute hour day_of_month month day_of_week time_zone` 
+- Tasks can be assigned warehouses for execution explicitly or use severless compute
+- Tasks can be suspended or resumed via `ALTER TASK <TASK_NAME> SUSPEND/RESUME`
+- Tasks can be executed in order by creating tree of tasks
+- Use `SELECT SYSTEM$TASK_DEPENDENTS_ENABLE('<TASK_NAME>')` to recursively resume task trees
+- Tasks obey conditions using the *WHEN* keyword. Conditions do not support functions
+- We can access task history via `SELECT * FROM TABLE(information_schema.task_history()) ORDER BY scheduled_time desc`
+
+## Streams
+
+- Stream objects are used to conduct change-data-capture (CDC)
+- Stream objects include the changed data and the metadata columns: action, update and row_id
+- Under the hood streams use offsets to capture snapshots of tables at a given point in time
+- Streams become stale after a maximum of 14 days and can't be consumed any more
+- Once a stream has been *consumed* (via INSERT, UPDATE, or DELETE), it is empty
+- We can create streams via `CREATE OR REPLACE STREAM <STREAM_NAME> on TABLE <TABLE_NAME>`
+- Streams do not automatically handle CDC operations for us, meaning we need to write logic to insert, update or delete changes captured in streams
+- Streams can be combined with tasks to automatically execute logic via `CREATE OR REPLACE TASK <TASK_NAME> WHEN SYSTEM$STREAM_HAS_DATA('<STREAM_NAME>') AS ...`
+- Streams can be configured as *append-only* by setting `APPEND_ONLY=TRUE` (which may improve performance a lot)
+- We can also use `CHANGES` together with `OFFSET` in order to have more control over the offset
+
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
