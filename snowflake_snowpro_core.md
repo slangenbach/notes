@@ -4,10 +4,12 @@ Notes on the [course][1] from Udemy.
 
 ## General
 
-- Snowflake offers Standard, Enterprise,  Business Critical and Virtual Private editions
+- Snowflake offers Standard, Enterprise, Business Critical and Virtual Private editions
 - Enterprise offers multi-cluster warehouses, 90 day time travel, and other features
-- Business Critical
 - Virtual Private edition is made up of a dedicated services and needs to be setup on a by case basis
+- We can use BI tools like PowerBI and Tableau to analyze data in Snowflake
+- Additionally we can integrate other tools with Snowflake via partner connect
+- Finally the Snowflake Marketplace offers access to dataset and apps from third parties
 
 ## Architecture
 
@@ -185,6 +187,22 @@ privileges
 - Streams can be combined with tasks to automatically execute logic via `CREATE OR REPLACE TASK <TASK_NAME> WHEN SYSTEM$STREAM_HAS_DATA('<STREAM_NAME>') AS ...`
 - Streams can be configured as *append-only* by setting `APPEND_ONLY=TRUE` (which may improve performance a lot)
 - We can also use `CHANGES` together with `OFFSET` in order to have more control over the offset
+
+## Materialized Views
+
+- Materialized Views combine the benefits of a view (data from source tables are always up to date) and a table (data is persisted, improving performance)
+- Materialized Views are a good option to abstract complex, long-running query logic which is used often, yet the underlying data is changing infrequently
+- Materialized Views are only available from the Enterprise Edition onwards and do not support joins, UDFs, and some aggregate functions
+- Maintenance (refreshing) of materialized views is managed by Snowflake and incurs some cost
+- Details about costs can be investigated via `SELECT * FROM TABLE(INFORMATION.SCHEMA.MATERIALIZED_VIEW_REFRESH_HISTORY)`
+- We can create materialized views via `CREATE OR REPLACE MATERIALIZED VIEW <VIEW_NAME> AS SELECT [...]`
+
+## Dynamic Data Masking (DDM)
+
+- DDM is a form of column-level security which allows different roles to see different kinds of data
+- We need to create a masking policy to use DDM via `CREATE OR REPLACE MASKING POLICY <POLICE_NAME> AS [...]` and apply it to a specific column via `ALTER TABLE <TABLE_NAME> MODIFY COLUMN <COLUMN_NAME> SET MASKING POLICY <POLICY_NAME>`
+- Once a policy is applied to a column, it can not be deleted. Therefore, use `SELECT * FROM TABLE(INFORMATION_SCHEMA.POLICY_REFERENCES(policy_name => <POLICY_NAME>))` to get information about applied policies and unset them
+- We can update masking policies via `ALTER MASKING POLICY <POLICY_NAME> SET BODY -> [...]`
 
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
