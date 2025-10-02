@@ -1,6 +1,6 @@
 # Snowflake SnowPro Core
 
-Notes on the [course][1] from Udemy.
+Notes on the [course][1] and the [exam prep][2] from Udemy.
 
 ## General
 
@@ -10,6 +10,7 @@ Notes on the [course][1] from Udemy.
 - We can use BI tools like PowerBI and Tableau to analyze data in Snowflake
 - Additionally we can integrate other tools with Snowflake via partner connect
 - Finally the Snowflake Marketplace offers access to dataset and apps from third parties
+- The Snowflake UI is referred to as *Snowsight*
 
 ## Architecture
 
@@ -28,7 +29,21 @@ Notes on the [course][1] from Udemy.
 
 ## Identity and Access Management
 
-- Org Admin > Account Admin > Security Admin /  Sys Admin > User Admin (Sec) / Custom Roles (Sys Admin) > Public (User Admin)
+- Snowflake combines discretionary access control (DAC) and role-based access control (RBAC)
+- DAC means that each object has an owner who can grant access to it
+- RBAC means privileges are assigned to roles which are assigned to users
+- Securable objects include account, user, role, database (including schema, table, etc.), warehouse, etc.
+- The role hierarchy is: 
+    - Org Admin (not a role strictly speaking)
+        - Account Admin
+            - Security Admin > User Admin > Public
+            - Sys Admin > Custom Roles
+- The account admin can be secured via MFA
+- Use the security admin to manage object grants globally
+- Use the sys admin to create and manage objects (warehouses, databases, tables) globally
+- The sys admin should be assigned any custom role as parent
+- Use the user admin to create users and roles, but not to grant privileges
+- The public role is attached to every user
 
 ## Data Ingestion
 
@@ -204,5 +219,17 @@ privileges
 - Once a policy is applied to a column, it can not be deleted. Therefore, use `SELECT * FROM TABLE(INFORMATION_SCHEMA.POLICY_REFERENCES(policy_name => <POLICY_NAME>))` to get information about applied policies and unset them
 - We can update masking policies via `ALTER MASKING POLICY <POLICY_NAME> SET BODY -> [...]`
 
+## Best Practices
+
+- Enable auto-suspend and auto-resume for warehouses per default
+- Adjust timeouts for auto-suspend based on workloads
+- Choose warehouses sizes based on workloads
+- Use transient tables for development and staging
+- Use cluster keys if absolutely necessary
+- Disable time travel for transient tables, e.g. for staging
+- Use 4-7 days time travel for production tables
+- Potentially disable time travel for very large, high-churn tables (rely on fail-safe instead)
+
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
+[2]: https://www.udemy.com/course/snowflake-certification-snowpro-core-exam-prep
