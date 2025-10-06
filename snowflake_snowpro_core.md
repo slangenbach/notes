@@ -5,19 +5,24 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 ## General
 
 - Snowflake offers Standard, Enterprise, Business Critical and Virtual Private editions
-- Enterprise offers multi-cluster warehouses, 90 day time travel, and other features
+- Enterprise offers multi-cluster warehouses, 90 day time travel, materialized views, search optimization, data masking, etc.
+- Business Critical offers custom-manager encryption
 - Virtual Private edition is made up of a dedicated services and needs to be setup on a by case basis
 - We can use BI tools like PowerBI and Tableau to analyze data in Snowflake
 - Additionally we can integrate other tools with Snowflake via partner connect
 - Finally the Snowflake Marketplace offers access to dataset and apps from third parties
 - The Snowflake UI is referred to as *Snowsight*
+- The Snowflake CLI is referred to as [SnowSQL][3]. SnowSQL does support scripting for procedural code via an extension
+- Snowpark enables different programming language (e.g. Python) to push down code (as SQL) to Snowflake
 
 ## Architecture
 
-- Snowflake separates storage, compute (called _warehouse_ in Snowflake lingo) and additional services
+- Snowflake separates storage, compute (called _warehouse_ in Snowflake lingo) and additional (cloud) services
+- Snowflake is built as a multi-cluster (MPP compute cluster) shared data system (compressed columnar storage as BLOB)
 - Warehouses sizes range from XS (1 server) to 6-XL (128 servers)
 - Data is stored in BLOB storage as hybrid columnar storage
 - Warehouses can be scaled horizontally using _standard_ and _economy_ policies. _Standard_ policy focuses on minimize queuing of queries (starts new cluster if when its needed), while _economy_ focuses on preserving credits (starts new cluster only if loaded for approx. 6min)
+- Multi-cluster warehouses help especially with many concurrent users
 
 ## Pricing
 
@@ -50,8 +55,10 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 - Data can be ingested in bulk or continuously
 - A stage in Snowflake refers to an object where data metadata is stored, e.g. its location and the files it contains
 - External stages refer to object storage of a cloud provider, e.g. AWS S3 bucket
-- Internal stages refer to local file storage
+- Internal stages refer to Snowflake-managed local file storage
+- Internally USER, TABLE and NAMED INTERNAL and EXTERNAL stages exist
 - We refer to external stages using @STAGE_NAME
+- Use the `PUT` command in SnowSQL to upload files to stages and the `GET` command to download files from *internal* stages
 
 ### Ingesting data using the COPY command
 
@@ -230,6 +237,13 @@ privileges
 - Use 4-7 days time travel for production tables
 - Potentially disable time travel for very large, high-churn tables (rely on fail-safe instead)
 
+## Exam Stuff
+
+TODO: Directory tables
+
+- HLL function for approximation of distinct counts 
+
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
 [2]: https://www.udemy.com/course/snowflake-certification-snowpro-core-exam-prep
+[3]: https://docs.snowflake.com/en/user-guide/snowsql
