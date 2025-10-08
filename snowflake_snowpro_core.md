@@ -57,8 +57,14 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 - External stages refer to object storage of a cloud provider, e.g. AWS S3 bucket
 - Internal stages refer to Snowflake-managed local file storage
 - Internally USER, TABLE and NAMED INTERNAL and EXTERNAL stages exist
-- We refer to external stages using @STAGE_NAME
-- Use the `PUT` command in SnowSQL to upload files to stages and the `GET` command to download files from *internal* stages
+    - USER stages are tied to users, can not be accessed by other users and not be altered or dropped
+    - USER stages can be referred to via `@~`
+    - Data from USER stages can be loaded into multipe tables
+    - TABLE stages are automatically created with a table
+    - TABLE stages can only be accessed by one table
+    - TABLE stages can be referred to via `@%<TABLE_STAGE_NAME>`
+- We refer to internal and external stages using @STAGE_NAME
+- Use the `PUT` command in SnowSQL to upload files to stages and the `GET` command to download (unload) files from *internal* stages
 
 ### Ingesting data using the COPY command
 
@@ -73,7 +79,9 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 - Using `TRUNCATECOLUMNS = TRUE` we can truncate text strings exceeding column length
 - Setting `FORCE = TRUE` reloads all data during a COPY operation
 - The local load history is available from the `INFORMATION_SCHEMA.LOAD_HISTORY` view, the global history is via `SNOWFLAKE_DB.ACCOUNT_USAGE.LOAD_HISTORY`
+- *Unloading* data means exporting data from a table as a file
 - Data can be *unloaded* form a table into a stage (BLOB storage) by using the `COPY ` command and switching source and destination, e.g. `COPY INTO @<STAGE_NAME> FROM <TABLE_NAME>`
+- Aggregate functions, flatten, group by, filters using WHERE and joins are not supported in the COPY INTO command
 
 ### Handling semi-structured data
 
@@ -83,6 +91,18 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
     - you may quote object and attribute with double quotes if it contains spaces
 - Use the `flatten` function to flatten nested JSON objects.
 - Use `METADATA$<ATTRIBUTE>` to query metadata from a file
+
+### Directory Tables
+
+- Using Directory Tables we can access metadata of staged files via `SELECT * FROM DIRECTORY(@<STAGE_NAME>)`
+- Directory Tables need to be explicitly enabled and refreshed before they can be used
+
+### File URLs
+
+- Stages support scoped, file and pre-signed URLs
+- Scoped URLs offer temporary access to a file and expire after 24h
+- File URLs offer permanent access to a file
+- Pre-signed URLs can be used to directly access a file via the browser
 
 ### Ingesting data from AWS S3
 
@@ -97,6 +117,44 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 
 - Snowflake demands and the *Cloud Storage Admin* role and a GCP Service Account to interact with GCP Buckets
 
+## Data Transformation
+
+- Snowflake supports SQL:1999 and parts of SQL:2003, e.g. scalar, aggregate, window, table and system functions
+- Functions are schema objects
+
+### Estimation Functions
+
+- Use the (HyperLogLog) `HLL` function to estimate number of distinct values 
+- Use `APPROX_TOP_K` to estimate the most frequent values
+- Use `APPROX_PERCENTILE` to approximate percentiles
+- Use `MINHASH` to calculate similarity of two or mor sets
+
+### User Defined Functions (UDFs)
+
+- UDFs support SQL, Python, Java and JavaScript
+- We can create UDFs via `CREATE FUNCTION <FUNCTION_NAME>(<PARAMS>) RETURNS <DATA_TYPE> LANGUAGE <LANGUAGE> AS $$ ... $$`
+
+### Stored Procedures (SPs)
+
+- Use SPs to perform database operations.
+- SPs support Snowflake Scripting, JavaScript and Python or Java via the Snowpark API
+- We can create SPs via `CREATE PROCEDURE <PROCEDURE_NAME>(<PARAMS>) RETURNS <DATA_TYPE> LANGUAGE <LANGUAGE> AS BEGIN ... END`
+- SPs can either be run via caller or owner rights
+
+### External Functions (EFs)
+
+- External functions trigger cloud provider functions (e.g. AWS Lambda functions)
+- EFs must return scalar values
+- EFs can not be shared
+
+### Secure Functions
+
+- Using secured functions, we can hide data and metadata from users, yet doing so will reduces query performance (as optimizer can not be used)
+
+### Sequences
+
+- Think of sequences as Python ranges. It is most often used in CREATE TABLE statements
+
 ## Performance Optimization
 
 - As Snowflake architecture is very different from traditional databases, performance optimization centers around choosing *appropriate data types*, *sizing warehouses* correctly (e.g. by scaling up or out) and *caching*
@@ -107,11 +165,15 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 
 - We can create roles via `CREATE ROLE <ROLE_NAME>`
 - Roles can be granted privileges using `GRANT USAGE ON <OBJECT> <OBJECT_NAME> TO ROLE <ROLE_NAME>`
+- Important global privileges include creating a share, importing and applying masking policies
+- Important privileges related to objects include *MODIFY*, *MONITOR*, *OPERATE* (specific to warehouse), *USAGE*, *REFERENCE_USAGE* (for views), *OWNERSHIP* and *ALL*
+- Important privileges for stages include *READ*, *USAGE* (for external stage only), *WRITE* (for internal stages only)
 
 ## Snowpipe
 
 - Snowpipe monitors buckets for new files and automatically loads and transforms them
 - It is build on serverless infrastructure and does not use warehouses (seems like S3 Object Lambda in disguise)
+- Snowpipe can also be triggered by REST API endpoints
 - Using Snowpipe involves creating an external stage, using the `COPY` command, creating the pipe and setting up a (S3) notification (Queue, EventGridand event subscription with *Storage Queue Data Contributor* role for Azure) to trigger the pipe
 - We create pipes using `CREATE OR REPLACE pipe <PIPE_NAME> AS COPY INTO <TABLE_NAME> FROM @<STAGE_NAME>`
 - Make sure to set `AUTO_INGEST = TRUE` in order to load files automatically
@@ -119,13 +181,13 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 - We can list all pipes using `SHOW PIPES`
 - We can update pipe using `ALTER pipe <PIPE_NAME> refresh`
 - We can get the status of a pipe using `SELECT SYSTEM$PIPE_STATUS('<PIPE_NAME>')`
+- Snowpipe works best with files between 100 and 250 MB
 
 ## Time Travel
 
 - Time allows us to access historical data, e.g. data which has been delete or updated. It also allows us to restore dropped schemas, tables databases
 - The retention period for time travel depends on the Snowflake editions (default is 1 day, 1 day is also the max for standard, whereas 90 days is the max for other editions)
-- We can modify the retention period for a table by editing the `DATA_RETENTION_TIME_IN_DAYS` property
-
+- We can modify the retention period for a table by editing the `DATA_RETENTION_TIME_IN_DAYS` property. Alternatively, we can set `MIN_DATA_RETENTION_TIME_IN_DAYS` on the account level.
 - We can use time travel by either querying data at a specific time stamp via `SELECT * FROM <TABLE_NAME> BEFORE (TIMESTAMP => <TIMESTAMP>)`, or offset via `SELECT * FROM <TABLE_NAME> AT (OFFSET => <NEGATIVE_OFFSET_IN_SECONDS>)`, or before a certain query id via `SELECT * FROM <TABLE_NAME> BEFORE (STATEMENT => <QUERY_ID>)`
 - Additionally entire objects can be recovered via `UNDROP <OBJECT> <OBJECT_NAME>`
 - Always create a backup table with the results from time travel, then truncate the table we need to fix, and finally insert data from the backup table into the truncated table
@@ -150,9 +212,10 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 ## Zero-Copy Cloning
 
 - Snowflake supports cloning of various objects (databases, schemas, tables, stream, file formats, sequences, tasks - and with some limitations also stages and pipes) via the `CLONE` keyword
+- Named Internal Stage and pipes which are not referencing external stages can not be cloned
 - If we clone an object, all of its child objects are also cloned
 - Cloning is done via zero-copy, meaning only a snapshot of the metadata is duplicated, not the data itself
-- Note that, while all child objects will inherit their privileges, the parent object will not
+- Note that, while all child objects will inherit their privileges, the parent object will not.
 - In order to clone tables, we need *SELECT* , for pipes, streams and task we need *OWNER*, and for all other objects we need *USAGE* 
 privileges
 - We can combine cloning and time travel
@@ -163,11 +226,18 @@ privileges
 - Like copying, swapping only affects metadata
 - The syntax to swap a table is `ALTER TABLE <TABLE_NAME> SWAP WITH <TABLE_NAME_TO_SWAP_WITH>`
 
+## Replication
+
+- Data can be replicated to another region
+- Use `SYSTEM$GLOBAL_ACCOUNT_SET_PARAMETER` to enable replication
+
 ## Data Sharing
 
 - Snowflake enables object sharing (tables, external tables, secure views, secure materialized views, secure UDFs) between accounts
 - Sharing data does not copy data, instead the producer account grants *read-only* privileges to the consumer account
 - Sharing is available for editions except the virtual private edition
+- Only a single database can be part of a share
+- Only secure materialized views and secure UDFs can be shared
 - To create a share, first create it via `CREATE SHARE <SHARE_NAME>`. Then grant privileges for individual objects to the share, i.e. `GRANT USAGE ON DATABASE <DATABASE_NAME> TO SHARE <SHARE_NAME`. Afterwards add consumers to the share via `ALTER SHARE <SHARE_NAME> ADD ACCOUNT <ACCOUNT_ID>`. Finally import the share within the consumer account via `CREATE <OBJECT> <OBJECT_NAME> FROM SHARE <SHARE_NAME>
 - Consumers do not necessarily need dedicated Snowflake accounts, as shares can also be made available via *reader* accounts
 - Changes of objects within a share object are reflected to consumers immediately. However we might need to explicitly grant permissions to interact with shared objects.
@@ -226,6 +296,33 @@ privileges
 - Once a policy is applied to a column, it can not be deleted. Therefore, use `SELECT * FROM TABLE(INFORMATION_SCHEMA.POLICY_REFERENCES(policy_name => <POLICY_NAME>))` to get information about applied policies and unset them
 - We can update masking policies via `ALTER MASKING POLICY <POLICY_NAME> SET BODY -> [...]`
 
+## Search Optimization (SO)
+
+- SO adds a search access path to queries
+- SO can improve the performance of lookup and analytical queries
+- SO is a serverless feature
+- SO can be activated via `ALTER TABLE <TABLE_NAME> ADD SEARCH OPTIMIZATION (ON ...)`
+
+## Security
+
+- Data in Snowflake is encrypted in transit and on rest
+- Key rotation happens every 30 days
+- Re-keying can also be enabled with the Enterprise Edition. Doing so will change keys every year
+- Tri-Secret Secure is a feature from the Business Critical Edition, which enables customers to use customer-managed keys + Snowflake-managed keys
+- Secure the admin account with MFA
+- Use MFA or key pair authentication to secure user accounts
+- Use row access policies to apply row-level security
+- Policies are created via `CREATE OR REPLACE ROW ACCESS POLICY <POLICYNAME> ...`
+- Policies can be applied to policies via `ALTER TABLE <TABLE_NAME> ADD ROW ACCESS POLICY <POLICY_NAME>`
+
+## Performance
+
+- Caching in Snowflake happens in 3 areas:
+    - Result and metadata cache in cloud services
+    - Data Cache in compute layer
+    - Remote Disk (Cache) in storage layer
+- The Data Cache is a local SSD cache tied to a virtual warehouse and can not be shared
+
 ## Best Practices
 
 - Enable auto-suspend and auto-resume for warehouses per default
@@ -237,11 +334,12 @@ privileges
 - Use 4-7 days time travel for production tables
 - Potentially disable time travel for very large, high-churn tables (rely on fail-safe instead)
 
-## Exam Stuff
+## Misc
 
-TODO: Directory tables
-
-- HLL function for approximation of distinct counts 
+- Releases are deployed weekly
+- Use the *ACCOUNT_USAGE* schema to query historical usage data. It also includes information about dropped objects. Alternatively we can use the *READER_ACCOUNT_USAGE* schema which includes more limited information
+- The *INFORMATION_SCHEMA* can also be used to query historical usage data, but it has shorter retention time (7 days - 6 months), yet no latency (in comparison to *ACCOUNT_USAGE* schema)
+- 
 
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
