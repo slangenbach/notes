@@ -13,7 +13,7 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 - Finally the Snowflake Marketplace offers access to dataset and apps from third parties
 - The Snowflake UI is referred to as *Snowsight*
 - The Snowflake CLI is referred to as [SnowSQL][3]. SnowSQL does support scripting for procedural code via an extension
-- Snowpark enables different programming language (e.g. Python) to push down code (as SQL) to Snowflake
+- Snowpark enables different programming language (Python, Java and Scala) to push down code (as SQL) to Snowflake
 
 ## Architecture
 
@@ -37,6 +37,7 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 - Snowflake combines discretionary access control (DAC) and role-based access control (RBAC)
 - DAC means that each object has an owner who can grant access to it
 - RBAC means privileges are assigned to roles which are assigned to users
+- Both DAC and RBAC are available from the Enterprise Edition onwards
 - Securable objects include account, user, role, database (including schema, table, etc.), warehouse, etc.
 - The role hierarchy is: 
     - Org Admin (not a role strictly speaking)
@@ -70,7 +71,8 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 
 - Data can be transformed during loading into stages by using SQL syntax (and certain SQL functions) within the `FROM` clause of the `COPY INTO` command
 - We can also only load data into certain columns when copying data into a stage
-- We can handle errors during data ingestion using the `ON_ERROR` keyword (which is a copy option). Options include _ABORT_STATEMENT_, _SKIP_FILE_ (we can also specify the threshold of errors at which we skip a file using SKIP_FILE_<THRESHOLD>) and _CONTINUE_ 
+- We can handle errors during data ingestion using the `ON_ERROR` keyword (which is a copy option). Options include _ABORT_STATEMENT_, _SKIP_FILE_ (we can also specify the threshold of errors at which we skip a file using SKIP_FILE_<THRESHOLD>) and _CONTINUE_
+- ABORT_STATEMENT is the default setting for the `ON_ERROR` option
 - Stages and file formats can be saved into dedicated objects within dedicated schemas within a dedicated databases (e.g. MANAGE_DB)
 - Use the copy option `VALIDATION_MODE = RETURN_ERRORS | RETURN_N_ROWS` to validate data without loading it
 - We can _work_ with errors by creating an error table and retrieving rejected errors of the last query via `SELECT rejected_record from TABLE(result_scan(last_query_id()))`
@@ -82,6 +84,8 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 - *Unloading* data means exporting data from a table as a file
 - Data can be *unloaded* form a table into a stage (BLOB storage) by using the `COPY ` command and switching source and destination, e.g. `COPY INTO @<STAGE_NAME> FROM <TABLE_NAME>`
 - Aggregate functions, flatten, group by, filters using WHERE and joins are not supported in the COPY INTO command
+- Use the `FILES` param in the `COPY INTO` to load a single or multiple files
+- If the file format ins not explicitly set, the `COPY INTO` command will fail
 
 ### Handling semi-structured data
 
@@ -89,13 +93,15 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 - We can select (JSON) objects and their attributes loaded into a table of _variant_ type using the syntax `SELECT <COLUMN_NAME>:<OBJECT>.<ATTRIBUTE>::<DATA_TYPE> FROM <TABLE_NAME>`
     - We can also use the index of the column instead of the name using `$<INDEX_NUMBER>`
     - you may quote object and attribute with double quotes if it contains spaces
+- Note that we use a colon (:) followed by the field name to access nested JSON objects
 - Use the `flatten` function to flatten nested JSON objects.
 - Use `METADATA$<ATTRIBUTE>` to query metadata from a file
 
-### Directory Tables
+### Directory Tables (DRs)
 
 - Using Directory Tables we can access metadata of staged files via `SELECT * FROM DIRECTORY(@<STAGE_NAME>)`
-- Directory Tables need to be explicitly enabled and refreshed before they can be used
+- DRs need to be explicitly enabled and refreshed before they can be used
+- DRs are not separate database objects
 
 ### File URLs
 
@@ -133,18 +139,19 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 
 - UDFs support SQL, Python, Java and JavaScript
 - We can create UDFs via `CREATE FUNCTION <FUNCTION_NAME>(<PARAMS>) RETURNS <DATA_TYPE> LANGUAGE <LANGUAGE> AS $$ ... $$`
+- UDFs can be attached to schemas
 
 ### Stored Procedures (SPs)
 
 - Use SPs to perform database operations.
 - SPs support Snowflake Scripting, JavaScript and Python or Java via the Snowpark API
 - We can create SPs via `CREATE PROCEDURE <PROCEDURE_NAME>(<PARAMS>) RETURNS <DATA_TYPE> LANGUAGE <LANGUAGE> AS BEGIN ... END`
-- SPs can either be run via caller or owner rights
+- SPs can either be run via caller or owner rights (default).
 
 ### External Functions (EFs)
 
 - External functions trigger cloud provider functions (e.g. AWS Lambda functions)
-- EFs must return scalar values
+- EFs must return scalar values, i.e. one output value per input row
 - EFs can not be shared
 
 ### Secure Functions
@@ -182,23 +189,28 @@ Notes on the [course][1] and the [exam prep][2] from Udemy.
 - We can update pipe using `ALTER pipe <PIPE_NAME> refresh`
 - We can get the status of a pipe using `SELECT SYSTEM$PIPE_STATUS('<PIPE_NAME>')`
 - Snowpipe works best with files between 100 and 250 MB
+- Snowpipe stores metadata to prevent duplicate file loading
 
 ## Time Travel
 
 - Time allows us to access historical data, e.g. data which has been delete or updated. It also allows us to restore dropped schemas, tables databases
-- The retention period for time travel depends on the Snowflake editions (default is 1 day, 1 day is also the max for standard, whereas 90 days is the max for other editions)
-- We can modify the retention period for a table by editing the `DATA_RETENTION_TIME_IN_DAYS` property. Alternatively, we can set `MIN_DATA_RETENTION_TIME_IN_DAYS` on the account level.
+- The retention period for time travel depends on the Snowflake editions (**default is 1 day**, 1 day is also the max for standard, whereas 90 days is the max for other editions)
+- We can modify the retention period for a account/database/schema/table by editing the `DATA_RETENTION_TIME_IN_DAYS` property. Alternatively, we can also set `MIN_DATA_RETENTION_TIME_IN_DAYS` on the account level.
 - We can use time travel by either querying data at a specific time stamp via `SELECT * FROM <TABLE_NAME> BEFORE (TIMESTAMP => <TIMESTAMP>)`, or offset via `SELECT * FROM <TABLE_NAME> AT (OFFSET => <NEGATIVE_OFFSET_IN_SECONDS>)`, or before a certain query id via `SELECT * FROM <TABLE_NAME> BEFORE (STATEMENT => <QUERY_ID>)`
 - Additionally entire objects can be recovered via `UNDROP <OBJECT> <OBJECT_NAME>`
 - Always create a backup table with the results from time travel, then truncate the table we need to fix, and finally insert data from the backup table into the truncated table
 - If we need to undrop a table that already exits, e.g. because it has been recreated, try to rename the existing tables before undropping
 - Time travel costs results from additional storage. You can get additional information on storage used for different features via `SELECT * FROM SNOWFLAKE.ACCOUNT_USAGE.TABLES_STORAGE_METRICS`
+- Data can be queried using time travel via OFFSET and query ID
 
 ## Fail Safe
 
 - Fail safe is the disaster recovery feature in Snowflake
 - Data can be recovered for up 7 days after the time travel period has passed (for permanent tables)
+- Transient tables can not use fail safe
 - Recovery is done via Snowflake support
+- Fail safe can not be configured
+- Fail safe adds to data storage costs
 
 ## Table Types
 
@@ -233,7 +245,7 @@ privileges
 
 ## Data Sharing
 
-- Snowflake enables object sharing (tables, external tables, secure views, secure materialized views, secure UDFs) between accounts
+- Snowflake enables object sharing (tables, external tables, secure views, secure materialized views, secure UDFs) between accounts (_not_ tasks)
 - Sharing data does not copy data, instead the producer account grants *read-only* privileges to the consumer account
 - Sharing is available for editions except the virtual private edition
 - Only a single database can be part of a share
@@ -260,7 +272,7 @@ privileges
 
 - Use tasks to schedule SQL statements or stored procedures
 - Tasks can be created via `CREATE OR REPLACE TASK <TASK_NAME> SCHEDULE = '<SCHEDULE_STRING>' AS <SQL_QUERY>` - where <SCHEDULE_STRING> can be an interval or a CRON job, i.e. `USING CRON minute hour day_of_month month day_of_week time_zone` 
-- Tasks can be assigned warehouses for execution explicitly or use severless compute
+- Tasks can be assigned warehouses for execution explicitly or use serverless compute
 - Tasks can be suspended or resumed via `ALTER TASK <TASK_NAME> SUSPEND/RESUME`
 - Tasks can be executed in order by creating tree of tasks
 - Use `SELECT SYSTEM$TASK_DEPENDENTS_ENABLE('<TASK_NAME>')` to recursively resume task trees
@@ -285,7 +297,7 @@ privileges
 - Materialized Views combine the benefits of a view (data from source tables are always up to date) and a table (data is persisted, improving performance)
 - Materialized Views are a good option to abstract complex, long-running query logic which is used often, yet the underlying data is changing infrequently
 - Materialized Views are only available from the Enterprise Edition onwards and do not support joins, UDFs, and some aggregate functions
-- Maintenance (refreshing) of materialized views is managed by Snowflake and incurs some cost
+- Maintenance (refreshing) of materialized views is managed by Snowflake and incurs some (serverless) cost
 - Details about costs can be investigated via `SELECT * FROM TABLE(INFORMATION.SCHEMA.MATERIALIZED_VIEW_REFRESH_HISTORY)`
 - We can create materialized views via `CREATE OR REPLACE MATERIALIZED VIEW <VIEW_NAME> AS SELECT [...]`
 
@@ -302,11 +314,14 @@ privileges
 - SO can improve the performance of lookup and analytical queries
 - SO is a serverless feature
 - SO can be activated via `ALTER TABLE <TABLE_NAME> ADD SEARCH OPTIMIZATION (ON ...)`
+- We need OWNERSHIP of a table or ADD SEARCH OPTIMIZATION privileges on a schema to enable SO
+- SO incurs database storage and serverless costs
 
 ## Security
 
 - Data in Snowflake is encrypted in transit and on rest
 - Key rotation happens every 30 days
+- After rotating a key, new data is encrypted with the new encryption key
 - Re-keying can also be enabled with the Enterprise Edition. Doing so will change keys every year
 - Tri-Secret Secure is a feature from the Business Critical Edition, which enables customers to use customer-managed keys + Snowflake-managed keys
 - Secure the admin account with MFA
@@ -322,6 +337,8 @@ privileges
     - Data Cache in compute layer
     - Remote Disk (Cache) in storage layer
 - The Data Cache is a local SSD cache tied to a virtual warehouse and can not be shared
+- The metadata cache can return row count in table, min/max value of a column, and number of distinct values in a column without using a warehouse
+- The result cache can return hits without an an active warehouse
 
 ## Best Practices
 
@@ -336,10 +353,33 @@ privileges
 
 ## Misc
 
-- Releases are deployed weekly
 - Use the *ACCOUNT_USAGE* schema to query historical usage data. It also includes information about dropped objects. Alternatively we can use the *READER_ACCOUNT_USAGE* schema which includes more limited information
-- The *INFORMATION_SCHEMA* can also be used to query historical usage data, but it has shorter retention time (7 days - 6 months), yet no latency (in comparison to *ACCOUNT_USAGE* schema)
-- 
+- The *INFORMATION_SCHEMA* can also be used to query historical usage data, but it has shorter retention time (7 days - 6 months, in comparison to 365 days), yet no latency (in comparison to *ACCOUNT_USAGE* schema)
+- The maximum row length of a VARIANT data type is 128 MB uncompressed
+- Snowflake Scripting blocks include BEGIN, DECLARE, EXCEPTION and END
+- Objects created in Snowflake scripting blocks can be used outside of the block
+- Snowflake Scripting supports conditional logic, loops, cursors, variables and result sets
+- Layers in the Snowflake architecture include storage, query processing and cloud services
+- Shares include account identifiers and privileges on objects
+- Columns for clustering keys should be frequently used in WHERE or ORDER BY clauses and in JOINs
+- Key rotation means transferring an active key to a retired state after 30 days
+- Data retention period is always set by `(MIN)_DATA_RETENTION_TIME_IN_DAYS`
+- Use `SYSTEM$CLUSTERING_DEPTH` or `SYSTEM$CLUSTERING_INFORMATION` to get information on the clustering depth of a table
+- Clustering keys can be applied to multiple columns, and they can be applied to expressions
+- When using Economy policies for scaling, the needs to be enough workload for **6**min before a new cluster is provisioned
+- A single micro partition contains 50-500 MB
+- We need SELECT permissions to clone a table
+- Small warehouse means 2 credits, Large warehouse 8 credits
+- Releases are deployed weekly
+- All editions except Standard edition will get access to new releases on the second day of the release
+- Federated environments include the service provider (Snowflake) and the external identity provider (e.g. Entra ID)
+- Federated authentication supports Okta, most SAML 2.0 compliant vendors, and Entra ID FS
+- We need OWNERSHIP of network policy and user to assign network policies on a user level
+- Users with ACCOUNT ADMIN or SECURITY ADMIN role, as well as users with CREATE NETWORK POLICY privileges can create network policies n the account level
+- Interestingly there can be 1 or 2 public keys as part of a single key pair
+- The flatten function returns a lateral view
+- Use the `PARSE_JSON` function to convert JSON strings into VARIANT
+
 
 
 [1]: https://www.udemy.com/course/snowflake-masterclass
