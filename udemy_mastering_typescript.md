@@ -1,53 +1,118 @@
 # Mastering TypeScript
 
-Notes on the 2023 edition of the course from [Udemy][1]
+Notes for [Mastering TypeScript 2023][1] on Udemy
 
 ## General
 
-- Compile to JavaScript using `tsc my_code.ts`
-- Execute compiled code via `node my_code.js`
-- Use [prettier][2] to format TypeScript (TS) code
-- Use `let` to declare variables and `const` to declare constants
-- Functions are declared using the _function_ keyword.
-- Objects _seem_ similar to _dicts_ in Python
-- Use _===_ to perform strict equality checks (no type coercion)
+-   Use the `new` keyword to create instances of classes
+-   The project specific version of TypeScript can be included in _package.json_ by simply installing it via `npm install --save-dev typescript`
 
-* Use template literals (similar to f-strings in Python), i.e. return `Hello ${name}!`
+### Literal types
 
-## Annotations
+-   Combining union with literal types is useful to limit potential inputs to an argument, i.e. `let answer: "yes" | "no" | maybe`
 
-- Type inference is usually working good enough, so that we do not need to annotate types
-- By using the _any_ type, all of TS rules are no longer enforced
-  - In order to prevent this, always annotate variables which are not assigned a value initially
-- Strings are annotated via _string_
-- All numeric types are annotated using _number_
-- Boolean types are annotated using _boolean_
+### Tuples & Enums
 
-### Function Types
+-   Tuples and Enums are exclusive to TypeScript, they don't exist in JavaScript
+-   For some reason we can `push` and `pop` values from a tuple once it has been created
+-   Use `const enum` to delete any enum-specific code from compiled JavaScript
 
-- Type annotations and default parameters for functions work just like in Python
-  - mind the usage of semicolons to separate properties of objects
-  - be aware of inline objects containing excess properties
-- If a function does not return anything, annotate it with with _void_ (same as _None_ in Python)
-- A special case it he _never_ type, which is used to annotate functions that never should return anything (i.e. infinite loops)
+### Interfaces
 
-### Object types
+-   Interfaces are very similar to type aliases, yet important differences exist:
+    -   Interfaces can only describe the shape of objects, while type aliases can describe any type
+    -   Interfaces can extended
+-   Properties of interfaces can be _readonly_, via `readonly param: str`, or _optional_ via `param?: str`
+-   Interfaces can also define required methods via `someMethod(param: str): str`
+-   Interfaces can be extended (re-opened) by re-declaring it and adding properties (or methods). A more elegant to extend (inherit) interfaces is using the _extend_ keyword: `interface TypeScriptProgrammer extends Programmer`. You can also extend an multiple interfaces" `interface PythonProgrammer extends Employee, Programmer`
 
-- Type aliases are created using the `type` keyword, i.e. `type person = {first_name: string, last_name: string}`
-- We can make a property of an object optional by placing a `?` after its name
-- We can declare a property of an object as _readonly_ by placing the keyword before the name of the argument
-- We can combine the intersection of two types to define a new type by using `&`
+## Configuration
 
-### Array Types
+-   Run `tsc --init` to create the configuration file _tsconfig.json_
+-   Common [configuration options][2] include:
+    -   specifying the files to compile via _files_, _include_ or _exclude_
+    -   specifying the output directory for complied files via _outDir_
+    -   specifying the version of JavaScript to compile to via _target_
+-   Run `tsc file.ts` or simply `tsc` to compile to JavaScript. Use _watch mode_ to compile a file continuously via `tsc -w file.tsc` or simply `tsc -w`
 
-- The type of an array needs to be declared explicitly, i.e. `const users: string[]`
-- Nested arrays are annotated using multipe pairs of brackets, i.e. `cost matrix: number[][]`
+## Excursion to the DOM
 
-## Union Types
+-   TypeScript knows about the DOM (try playing with `document`) out of the box
+-   Use the [lib][3] option to modify this behavior
+-   Use the _none null assertion operator (!)_ to tell TypeScript that something is _guaranteed_ to be not null
+-   Use type assertions (var as type) to make TypeScript treat an unknown type as a specific type
 
-- Union types are declared just like in Python, i.e. `let age: string | number`
-- Type narrowing (checking the type of variables) helps wto deal with union types
-- In order to annotate arrays with union types, put the types in brackets, i.e. `const stuff: (string | number)[] = []`
+## Classes
 
-[1]: https://covestro.udemy.com/course/learn-typescript/
-[2]: https://prettier.io/
+### JavaScript
+
+-   `constructor()` and `this` are for JavaScript what `__init__()` and `self` are for Python
+-   Class fields are syntactic sugar for setting static values via `this.value = 42`
+-   JavaScript supports private class fields and methods via prepending hashmarks to the front of the field/method name
+-   JavaScript also support getters and setters by prepending _get_ (or _set_) in front of class methods
+-   Static properties and methods only exist on the class, not on an instance of the class
+-   Classes can inherit from another class via the _extends_ keyword
+-   In order to add class fields to child classes, call `super(parentVal)` in the constructor of the child class, followed by the new class fields
+
+### TypeScript
+
+-   Init values must be typed in TypeScript -> Use the parameter properties shorthand syntax to do so
+-   Class fields can be declared readonly by putting the `readonly` modifier inf front of them.
+-   By default all properties and methods of classes are public. You may put `public` in front of properties/methods in order to signal safe public use to other developers
+-   Prepend `private` to a property or method in order to hide them from public access and any other classes
+-   Use the `protected` modifier to make properties accessible to child classes
+-   `abstract` classes define methods which must be implemented by a child classes (similar to what interfaces do for regular classes)
+
+## Generics
+
+-   Generics are reusable functions (and classes) which support multiple types
+-   Generics support type arguments via a special syntax: `genericFunc<Type>(param: Type): Type {}`
+-   Generic function can accept more than one parameter: `genericFunc<T,U>(param1: T, param2: U)`
+-   We can put constraints on the types generic functions accept: `genericFunc<T extends object>(param: T): T {}` - This function will only accept types of type object
+-   We can also assign default types via `genericFunc<T = number>()`
+-   While TypeScript is usually able to infer the actual type passed to a generic function, we may have to explicitly state it via `genericFunc<string>("stringParam")`
+-   Note: Add a trailing comma (<T,>) to the type definition of arrow functions if you are working with TSX and React
+
+## Type Narrowing
+
+-   Type (`typeof(param === "type")`) and truthiness (`if(param)`) guards help us to narrow down types
+-   Triple equals ensure that variables have the same type _and_ value
+-   The `in` and `instanceof` operators work the same way as in Python
+-   TypeScript allows us to define functions returning _type predicates_ which allow TypeScript to do the actual type narrowing
+-   _Discriminated Unions_ help us to do type narrowing on objects containing the same attributes by adding a literal type, i.e. `kind: "literal type"`, to all objects and switching logic on the `kind` property
+-   Use the `never` type to guard yourself against forgetting to handling types
+
+## Type Declarations
+
+-   Type declaration files contain the `.d.ts` suffix
+-   Install type declaration files via `npm install --save-dev @types/<package>`
+
+## Modules
+
+-   Use ES Modules syntax, ditch namespaces
+-   If working within scripts (files without export) all variables and types exist in a shared global scope
+-   Changing the _modules_ parameter in _tsconfig.json_ from `commonJS` to `ES6` allows using modules in the browser
+-   Use `export default` to export one (and only one) specific object - this object can be imported without named imports (curly braces)
+-   Named imports can be renamed via `import {myFunc as myAlias} from ./utils`
+
+## Webpack
+
+-   [Webpack][4] bundles files and dependencies for usage in the browser
+-   Using Webpack with TypeScript requires the _ts-loader_ package
+-   SourceMaps allows us to debug bundled code
+
+## React
+
+-   Use [create-react-app][5] to easily create React apps with [TypeScript integration][6]
+-   TSX allows us to write TypeScript with HTML markup
+-   Check out the React + TypeScript [cheatsheet][7]
+-   Check out [React Developer Tools][8]
+
+[1]: https://www.udemy.com/course/learn-typescript/
+[2]: https://www.typescriptlang.org/tsconfig#references
+[3]: https://www.typescriptlang.org/tsconfig#lib
+[4]: https://webpack.js.org/concepts/#entry
+[5]: https://create-react-app.dev/
+[6]: https://create-react-app.dev/docs/adding-typescript/
+[7]: https://github.com/typescript-cheatsheets/react
+[8]: https://react.dev/learn/react-developer-tools
