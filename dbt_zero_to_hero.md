@@ -1,11 +1,12 @@
-# DBT Zero to Hero
+# dbt Zero to Hero
 
 Notes on the [course][1] from Udemy.
 
 ## General
 
-- DBT focuses on transforming raw data already loaded into the data warehouse (DWH)
+- dbt focuses on transforming raw data already loaded into the data warehouse (DWH)
 - It brings software engineering best practices to data transformation
+- dbt can be extended via 3rd packages from [dbt hub][5]
 
 ## Theory
 
@@ -46,11 +47,30 @@ Notes on the [course][1] from Udemy.
 - dbt support units and data tests
 - Unit tests test transformations with mock data
 - Data tests (~integration tests) test data integrity and quality against real data
+- Unit tests can be specified using a _yaml_ file including name, model, given and expected fields
 - Data tests supports singular (SQL queries expected to return an empty result set) and generic (unique, not_null, accepted_values, relationships)
 - We can define custom generic tests and use tests provided by 3rd party packages
+- Tests can have different severities (_warn_ or _error_)
 - Contracts enforce the schema of models
+- Use `dbt test -x` to stop after the first failing test. Use `dbt test -s <TEST_NAME>` to target a specific taks
+- Add `+store_failures: true` to `dbt_project.yml` to save test failures to the DWH
+
+## Macros
+
+- dbt makes heavy use of [Jinja][4] and adds custom Jinja features such as `ref` and `source`
+- Macros are reusable blocks of Jinja code (similar to function in programming languages)
+- Macros start with `{% macro MACRO_NAME(PARAM_NAME) %}` and end with `{% endmacro %}`
+- Adding a dash `-` before and/or after Jina tags will strip whitespace
+
+## Documentation
+
+- Documentation can be inserted into YAML files (using _description_ keyword with strings or Jinja placeholders), and/or in Markdown files
+- We can also customize the overview page by writing custom Markdown inside a docs Jinja block
+- Use `dbt docs generate` to compile documentation and `dbt docs serve` to view it
 
 
 [1]: https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt
 [2]: https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/
 [3]: https://airbyte.com/data-engineering-resources/common-table-expression
+[4]: https://en.wikipedia.org/wiki/Jinja_(template_engine)
+[5]: https://hub.getdbt.com/
