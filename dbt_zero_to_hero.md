@@ -68,6 +68,22 @@ Notes on the [course][1] from Udemy.
 - We can also customize the overview page by writing custom Markdown inside a docs Jinja block
 - Use `dbt docs generate` to compile documentation and `dbt docs serve` to view it
 
+## Analyses
+
+- Analyses enables us to execute ad-hoc queries using dbt macros
+
+## Hooks
+
+- Hooks allow us to execute SQL queries on certain events
+- Hook types include _on-run-start_, _on-run-end_, _pre-hook_ and _post-hook_
+
+## Grants
+
+- Grants enable us to grant permissions to roles within dbt using YAML syntax
+
+## Fusion Engine
+
+- dbt Fusion is a re-implementation of the dbt core logic in Rust. It also has built-in SQL compiler
 
 [1]: https://www.udemy.com/course/complete-dbt-data-build-tool-bootcamp-zero-to-hero-learn-dbt
 [2]: https://www.oreilly.com/library/view/designing-data-intensive-applications/9781491903063/
