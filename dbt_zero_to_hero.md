@@ -68,6 +68,16 @@ Notes on the [course][1] from Udemy.
 - We can also customize the overview page by writing custom Markdown inside a docs Jinja block
 - Use `dbt docs generate` to compile documentation and `dbt docs serve` to view it
 
+## Logging
+
+- We can log custom message by using the {{ log("LOG_MESSAGE", info=<TRUE|False>) }} macro
+- Setting `info=True` logs messages to stdout and to the _dbt.log_ file
+
+## Variables
+
+- Variabels can be defined in _dbt_project.yml_
+- Use `var("VAR_NAME")` to access variables
+
 ## Analyses
 
 - Analyses enables us to execute ad-hoc queries using dbt macros
