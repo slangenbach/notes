@@ -12,7 +12,6 @@ Notes on the [course][1] from TalkPython Training.
 - If optimizing for performance, always think about the upper bound of improvement, _before_ implementing logic asynchronously
 - Consider [alternative event loop implementations][4], if dealing with lots of events
 
-
 ## AsyncIO
 
 - The event loop orchestrates tasks
@@ -28,7 +27,16 @@ Notes on the [course][1] from TalkPython Training.
 
 ## Threads
 
-- Threads work with the fork/join pattern
+- [Threads][8] work with the fork/join pattern
+- We can create threads via `t = threading.Thread(target=<NAME_OF_FUNCTION>, args=(), kwargs={})` and start them via `t.start()`
+- If `daemon=True` the thread runs in the background and is immediately shut down if the main process shuts down (without any clean up)
+- If we want to wait for all threads to finish, use need to join them via `t.join()`
+- We may use a dedicated cancellation thread to check for signals to cancel all active threads, by first checking if any thread is alive, joining on them with a small wait time, and then checking if the cancellation thread is alive
+- An alternative to using the threading module directory is to use [ThreadPoolExecutor][9] instead
+
+### Thread Safety
+
+tbd
 
 
 [1]: https://training.talkpython.fm/courses/details/python-concurrency-deep-dive
@@ -38,3 +46,5 @@ Notes on the [course][1] from TalkPython Training.
 [5]: https://docs.aiohttp.org/en/stable/index.html
 [6]: https://github.com/encode/httpx/
 [7]: https://github.com/Tinche/aiofiles
+[8]: https://docs.python.org/3/library/threading.html
+[9]: https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
