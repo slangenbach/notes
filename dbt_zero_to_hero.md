@@ -100,3 +100,4 @@ Notes on the [course][1] from Udemy.
 [3]: https://airbyte.com/data-engineering-resources/common-table-expression
 [4]: https://en.wikipedia.org/wiki/Jinja_(template_engine)
 [5]: https://hub.getdbt.com/
+    
