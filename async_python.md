@@ -36,7 +36,14 @@ Notes on the [course][1] from TalkPython Training.
 
 ### Thread Safety
 
-tbd
+- Thread Safety is about avoiding temporary, invalid states in programs using threading
+- Use Lock[10] per default
+- Consider using reentrant lock ([RLock][11]) only if the same threads needs to re-enter the same lock before releasing it
+- Using fine-grained locks often adds complexity and only yields minimal performance improvements
+
+## Multiprocessing
+
+- tbd
 
 
 [1]: https://training.talkpython.fm/courses/details/python-concurrency-deep-dive
@@ -48,3 +55,5 @@ tbd
 [7]: https://github.com/Tinche/aiofiles
 [8]: https://docs.python.org/3/library/threading.html
 [9]: https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
+[10]: https://docs.python.org/3/library/threading.html#lock-objects
+[11]: https://docs.python.org/3/library/threading.html#rlock-objects
