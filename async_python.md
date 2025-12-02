@@ -32,7 +32,7 @@ Notes on the [course][1] from TalkPython Training.
 - If `daemon=True` the thread runs in the background and is immediately shut down if the main process shuts down (without any clean up)
 - If we want to wait for all threads to finish, use need to join them via `t.join()`
 - We may use a dedicated cancellation thread to check for signals to cancel all active threads, by first checking if any thread is alive, joining on them with a small wait time, and then checking if the cancellation thread is alive
-- An alternative to using the threading module directory is to use [ThreadPoolExecutor][9] instead
+- An alternative to using the threading module directly is to use [ThreadPoolExecutor][9] instead
 
 ### Thread Safety
 
@@ -43,7 +43,11 @@ Notes on the [course][1] from TalkPython Training.
 
 ## Multiprocessing
 
-- tbd
+- In order to use multiprocessing, first create a pool via `multiprocessing.Pool()`
+- Then create tasks via `task = pool.apply_async(func=<FUNC_NAME>, args=(<ARGS>))`
+- Finally close the pool `pool.close()` and join `pool.join()`
+- If we need results from tasks, retrieve them via `task.get()`
+- An alternative to using the multiprocessing module directly is to use [ProcessPoolExecutor][12] instead
 
 
 [1]: https://training.talkpython.fm/courses/details/python-concurrency-deep-dive
@@ -57,3 +61,4 @@ Notes on the [course][1] from TalkPython Training.
 [9]: https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ThreadPoolExecutor
 [10]: https://docs.python.org/3/library/threading.html#lock-objects
 [11]: https://docs.python.org/3/library/threading.html#rlock-objects
+[12]: https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ProcessPoolExecutor
