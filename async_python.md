@@ -11,6 +11,7 @@ Notes on the [course][1] from TalkPython Training.
 - From Python 3.14 onwards, the GIL can be disabled to enable [free treading][3], so threads can be used to do things faster **and** more at once
 - If optimizing for performance, always think about the upper bound of improvement, _before_ implementing logic asynchronously
 - Consider [alternative event loop implementations][4], if dealing with lots of events
+- As more recent Python versions added features (task groups) to [asyncio][2], we rarely need external libraries such as [trio][13]
 
 ## AsyncIO
 
@@ -19,6 +20,11 @@ Notes on the [course][1] from TalkPython Training.
 - Calling an async function returns a coroutine object (~ coroutine)
 - Coroutines are build on generators, which can regarded as restartable functions
 - Tasks are coroutines tied to an event loop
+- We create tasks via `asyncio.create_task(<FUNC()>)`
+- Consider using [task groups][14] if you don't want to manually create/track tasks (alternatively look into [gathering tasks][15])
+- We run coroutines via `asyncio.run(<FUNC())`
+- **Note**: Awaiting a coroutine, does not hand control back to the event loop. Wrapping a coroutine in task first, then awaiting it does so
+- We can run blocking code in a dedicated thread using `asyncio.to_thread(<FUNC_NAME>)`
 
 ### Web Requests
 
@@ -49,6 +55,10 @@ Notes on the [course][1] from TalkPython Training.
 - If we need results from tasks, retrieve them via `task.get()`
 - An alternative to using the multiprocessing module directly is to use [ProcessPoolExecutor][12] instead
 
+## Cython
+
+- Consider using [Cython][16] to speed up Python without actually writing C
+
 
 [1]: https://training.talkpython.fm/courses/details/python-concurrency-deep-dive
 [2]: https://docs.python.org/3/howto/a-conceptual-overview-of-asyncio.html#a-conceptual-overview-of-asyncio
@@ -62,3 +72,7 @@ Notes on the [course][1] from TalkPython Training.
 [10]: https://docs.python.org/3/library/threading.html#lock-objects
 [11]: https://docs.python.org/3/library/threading.html#rlock-objects
 [12]: https://docs.python.org/3/library/concurrent.futures.html#concurrent.futures.ProcessPoolExecutor
+[13]: https://github.com/python-trio/trio
+[14]: https://docs.python.org/3/library/asyncio-task.html#task-groups
+[15]: https://docs.python.org/3/library/asyncio-task.html#asyncio.gather
+[16]: https://docs.cython.org/en/latest/index.html#
