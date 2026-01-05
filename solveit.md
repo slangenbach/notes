@@ -21,12 +21,20 @@ Notes on the [course][1] from [AnswerAI][2].
 - Use &`<FUNCTION_NAME>` (or `&[<FUNCTION_NAME_1>, <FUNCTION_NAME_2>]`) to let SolveIt use your python functions as tools
 - Use `globals()["<OBJECT_NAME>"]` to get any Python object
 
+## The Solve It Method
+
+1. Understand the problem: Clearly identify what you are being asked to do
+1. Devise a plan: Draw on similar problems; break problem down into sub problems; consider simplifying the problem
+1. Execute the plan: Make sure to verify at each step
+1. Look back and reflect: Consider alternatives and optimization; extract lessons learned
+
 ## Stuff
 
 - Try [MacWhisper][3]
 - Check out [Jina AI Reader][4]
 - Read [build to last][5] article
 - Try [shellSage][6]
+- Read [recursive language model][8] article
 
 
 [1]: https://solve.it.com/
@@ -36,3 +44,4 @@ Notes on the [course][1] from [AnswerAI][2].
 [5]: https://www.fast.ai/posts/2025-10-30-build-to-last.html
 [6]: https://ssage.answer.ai/index.html
 [7]: https://simonwillison.net/2025/Sep/18/agents/
+[8]: https://alexzhang13.github.io/blog/2025/rlm/
