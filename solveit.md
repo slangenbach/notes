@@ -20,6 +20,7 @@ Notes on the [course][1] from [AnswerAI][2].
 - An agent is a LLM running tools in a loop to achieve a goal (c.f. [Simon Willison][7])
 - Use &`<FUNCTION_NAME>` (or `&[<FUNCTION_NAME_1>, <FUNCTION_NAME_2>]`) to let SolveIt use your python functions as tools
 - Use `globals()["<OBJECT_NAME>"]` to get any Python object
+- Use `globals()["<OBJECT_NAME>"] = <OBJECT>` to create any Python object
 
 ## The Solve It Method
 
@@ -35,6 +36,13 @@ Notes on the [course][1] from [AnswerAI][2].
 - Read [build to last][5] article
 - Try [shellSage][6]
 - Read [recursive language model][8] article
+- Try [FastHTML][9] and [htmx][10]
+- Check out [daisyUI][11]
+- Try [marimo][12] in [VScode][13]
+- Check out dialog analyzing fastai library
+- Read up on using (session) [cookies][14] in [FastAPI]
+- Consider [keycastr][15] when recording demos
+- Check out [fastlite][16] when working with SQLite
 
 
 [1]: https://solve.it.com/
@@ -45,3 +53,11 @@ Notes on the [course][1] from [AnswerAI][2].
 [6]: https://ssage.answer.ai/index.html
 [7]: https://simonwillison.net/2025/Sep/18/agents/
 [8]: https://alexzhang13.github.io/blog/2025/rlm/
+[9]: https://www.fastht.ml/docs/
+[10]: https://htmx.org/
+[11]: https://daisyui.com/
+[12]: https://marimo.io/
+[13]: https://marimo.io/blog/vscode
+[14]: https://fastapi.tiangolo.com/tutorial/cookie-params/#declare-cookie-parameters
+[15]: https://github.com/keycastr/keycastr
+[16]: https://github.com/AnswerDotAI/fastlite
