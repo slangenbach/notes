@@ -12,8 +12,16 @@ Notes on the [course][1] from [AnswerAI][2].
 - Finish and polish dbtbnb (Cortex Analyst Layer)
 - AixPert
 - GradeMate
-- pym2v async and polishment
+- Polish pym2v async methods
 - AoC
+- Controlling remote PI device
+
+## The Solve It Method
+
+1. Understand the problem: Clearly identify what you are being asked to do
+1. Devise a plan: Draw on similar problems; break problem down into sub problems; consider simplifying the problem
+1. Execute the plan: Make sure to verify at each step
+1. Look back and reflect: Consider alternatives and optimization; extract lessons learned
 
 ## Creating AI agents from scratch
 
@@ -22,12 +30,24 @@ Notes on the [course][1] from [AnswerAI][2].
 - Use `globals()["<OBJECT_NAME>"]` to get any Python object
 - Use `globals()["<OBJECT_NAME>"] = <OBJECT>` to create any Python object
 
-## The Solve It Method
 
-1. Understand the problem: Clearly identify what you are being asked to do
-1. Devise a plan: Draw on similar problems; break problem down into sub problems; consider simplifying the problem
-1. Execute the plan: Make sure to verify at each step
-1. Look back and reflect: Consider alternatives and optimization; extract lessons learned
+## Web development the fast way
+
+- Check out [fastdaiy][19]
+
+## Web scraping reloaded
+
+- Check out [Zyte][18]
+
+## Interacting with other computers
+
+- Use the `capture` module from `dialoghelper` share your screen with SolveIt
+- Using SSH, [ngrok][21] and subprocess we give SolveIt access to remote machines
+
+## Browser automation
+
+- Try controlling Chromium using [Playwright for Python][22]
+
 
 ## Stuff
 
@@ -43,6 +63,8 @@ Notes on the [course][1] from [AnswerAI][2].
 - Read up on using (session) [cookies][14] in [FastAPI]
 - Consider [keycastr][15] when recording demos
 - Check out [fastlite][16] when working with SQLite
+- Try [nbdev][17] for a real project
+- Check out [Base Coat][20]
 
 
 [1]: https://solve.it.com/
@@ -61,3 +83,9 @@ Notes on the [course][1] from [AnswerAI][2].
 [14]: https://fastapi.tiangolo.com/tutorial/cookie-params/#declare-cookie-parameters
 [15]: https://github.com/keycastr/keycastr
 [16]: https://github.com/AnswerDotAI/fastlite
+[17]: https://nbdev.fast.ai/tutorials/tutorial.html
+[18]: https://www.zyte.com/zyte-api/
+[19]: https://answerdotai.github.io/fhdaisy/
+[20]: https://basecoatui.com/
+[21]: https://ngrok.com/
+[22]: https://github.com/microsoft/playwright-python
