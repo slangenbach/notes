@@ -30,7 +30,6 @@ Notes on the [course][1] from [AnswerAI][2].
 - Use `globals()["<OBJECT_NAME>"]` to get any Python object
 - Use `globals()["<OBJECT_NAME>"] = <OBJECT>` to create any Python object
 
-
 ## Web development the fast way
 
 - Check out [fastdaiy][19]
@@ -47,6 +46,10 @@ Notes on the [course][1] from [AnswerAI][2].
 ## Browser automation
 
 - Try controlling Chromium using [Playwright for Python][22]
+
+## Neat Python tricks
+
+- Use  `list(zip(arr[:-1], arr[1:]))` to convert a list of integers (`arr = [1, 2, 3, 4]`) to a list of tuples mimicking a graph: `[(1,2), (2, 3), (3,4)]`
 
 
 ## Stuff
@@ -65,6 +68,10 @@ Notes on the [course][1] from [AnswerAI][2].
 - Check out [fastlite][16] when working with SQLite
 - Try [nbdev][17] for a real project
 - Check out [Base Coat][20]
+- Consider using [Hetzner][23] as a cloud provider and built a terraform module for it
+- Check out [MarkDownMerge][24]
+- Check out [fastlucide][25]
+- Check out [tinygrad][26] and try the [puzzles][27]
 
 
 [1]: https://solve.it.com/
@@ -89,3 +96,8 @@ Notes on the [course][1] from [AnswerAI][2].
 [20]: https://basecoatui.com/
 [21]: https://ngrok.com/
 [22]: https://github.com/microsoft/playwright-python
+[23]: https://www.hetzner.com/
+[24]: https://github.com/AnswerDotAI/markdown_merge
+[25]: https://github.com/AnswerDotAI/fastlucide/
+[26]: https://tinygrad.org/
+[27]: https://github.com/obadakhalili/tinygrad-tensor-puzzles?tab=readme-ov-file
