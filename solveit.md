@@ -15,6 +15,8 @@ Notes on the [course][1] from [AnswerAI][2].
 - Polish pym2v async methods
 - AoC
 - Controlling remote PI device
+- PaiReader (**P**ython-powered **AI**-assisted **reading**)
+- Read *Designing Data-Intensive Applications* and *AI Engineering* with AI
 
 ## The Solve It Method
 
@@ -22,6 +24,10 @@ Notes on the [course][1] from [AnswerAI][2].
 1. Devise a plan: Draw on similar problems; break problem down into sub problems; consider simplifying the problem
 1. Execute the plan: Make sure to verify at each step
 1. Look back and reflect: Consider alternatives and optimization; extract lessons learned
+
+## SolveIt goodies
+
+- We can export Python code to a gist and use `import_gist()` from `dialoghelper` to import it into another dialog
 
 ## Creating AI agents from scratch
 
@@ -49,8 +55,15 @@ Notes on the [course][1] from [AnswerAI][2].
 
 ## Neat Python tricks
 
-- Use  `list(zip(arr[:-1], arr[1:]))` to convert a list of integers (`arr = [1, 2, 3, 4]`) to a list of tuples mimicking a graph: `[(1,2), (2, 3), (3,4)]`
+- Use `list(zip(arr[:-1], arr[1:]))` to convert a list of integers (`arr = [1, 2, 3, 4]`) to a list of tuples mimicking a graph: `[(1,2), (2, 3), (3,4)]`
 
+## AI-assisted reading
+
+- Check out the [How to read a book][29] book
+- Use Mistral Document AI to transform PDF into Markdown, then read and ask follow-up questions on it with SolveIt
+- Alternatively use the `capture` model to share the PDF directly
+- Think about creating stacked summaries of a book. Start with summary of the entire book, then create one part part, then one per chapter. If a particular chapter interests you especially, drill down, read it end to end and ask follow-up questions to AI.
+- Consider letting the AI write handoff notes, i.e. a summary of the dialogue with the reader for a chapter, and use it as context for the next chapter
 
 ## Stuff
 
@@ -72,6 +85,9 @@ Notes on the [course][1] from [AnswerAI][2].
 - Check out [MarkDownMerge][24]
 - Check out [fastlucide][25]
 - Check out [tinygrad][26] and try the [puzzles][27]
+- Check out [datalab][28]
+- Check out [tldraw][30]
+- Check out [Hypermedia Systems][31] book
 
 
 [1]: https://solve.it.com/
@@ -101,3 +117,7 @@ Notes on the [course][1] from [AnswerAI][2].
 [25]: https://github.com/AnswerDotAI/fastlucide/
 [26]: https://tinygrad.org/
 [27]: https://github.com/obadakhalili/tinygrad-tensor-puzzles?tab=readme-ov-file
+[28]: https://www.datalab.to/
+[29]: https://archive.org/details/howtoreadabook1972edition/mode/2up
+[30]: https://www.tldraw.com/
+[31]: https://hypermedia.systems/
