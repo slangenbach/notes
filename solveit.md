@@ -6,6 +6,7 @@ Notes on the [course][1] from [AnswerAI][2].
 
 - Edit the AI output to be what you want, don't have a conversation with the AI to get there
 - If feeding GitHub links to an AI, always use the raw version
+- Use the right tool for the job: Solve It for interactive tasks, Copilot/Claude Code/Codex for agentic stuff
 
 ## Projects
 
@@ -38,7 +39,7 @@ Notes on the [course][1] from [AnswerAI][2].
 
 ## Web development the fast way
 
-- Check out [fastdaiy][19]
+- Check out [fastdaisy][19]
 
 ## Web scraping reloaded
 
@@ -64,6 +65,7 @@ Notes on the [course][1] from [AnswerAI][2].
 - Alternatively use the `capture` model to share the PDF directly
 - Think about creating stacked summaries of a book. Start with summary of the entire book, then create one part part, then one per chapter. If a particular chapter interests you especially, drill down, read it end to end and ask follow-up questions to AI.
 - Consider letting the AI write handoff notes, i.e. a summary of the dialogue with the reader for a chapter, and use it as context for the next chapter
+- If links to images include #ai, Solve It can see them
 
 ## Stuff
 
@@ -75,7 +77,7 @@ Notes on the [course][1] from [AnswerAI][2].
 - Try [FastHTML][9] and [htmx][10]
 - Check out [daisyUI][11]
 - Try [marimo][12] in [VScode][13]
-- Check out dialog analyzing fastai library
+- Check out dialog analyzing fastai library (or do it yourself)
 - Read up on using (session) [cookies][14] in [FastAPI]
 - Consider [keycastr][15] when recording demos
 - Check out [fastlite][16] when working with SQLite
@@ -88,6 +90,7 @@ Notes on the [course][1] from [AnswerAI][2].
 - Check out [datalab][28]
 - Check out [tldraw][30]
 - Check out [Hypermedia Systems][31] book
+- Check out [fastanki][32] and review the [rules][33] for learning effectively. The refactor your existing data structure & algorithms, system design and coding question decks
 
 
 [1]: https://solve.it.com/
@@ -121,3 +124,5 @@ Notes on the [course][1] from [AnswerAI][2].
 [29]: https://archive.org/details/howtoreadabook1972edition/mode/2up
 [30]: https://www.tldraw.com/
 [31]: https://hypermedia.systems/
+[32]: https://answerdotai.github.io/fastanki/
+[33]: https://www.supermemo.com/en/blog/twenty-rules-of-formulating-knowledge
