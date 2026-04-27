@@ -2,53 +2,64 @@
 
 Notes on the [course][1] from Udemy.
 
-## General
+## Docker
+
+### General
 
 - Run containers in detached mode to avoid cluttering shell output via `docker run --detach`
 - To get container logs or inspect it, run `docker ps --all` to get its ID, and either run `docker logs --follow <CONTAINER_ID>` or `docker inspect`
 - You can pause containers using `docker pause <CONTAINER_ID>`.
 
-## Architecture
+### Architecture
 
 - Docker client is a CLI making API requests to the Docker host
 - Docker host exposes API, runs daemon, caches images and thus is able to run containers
 
-## Dockerfiles
+### Dockerfiles
 
 - Inspect the layers of an image with `docker history <IMAGE_NAME>`
 - Use `ENTRYPOINT` to specify the main executable for a container, and when you want to enable users to pass additional parameters to the container on startup. If using `CMD` instead, parameter passed to the container at run time will override the default command
 - Use multi-stage builds with alpine and [distroless][2], *non-root* images for production workloads
 - When using compiled languages, consider using dedicated build, deps and run stages to minimize image size
 
-## CLI
+### CLI
 
 - We can set environment variables from env files via the CLI using `--env-file ".env"`
 - We create volumes using the CLI via `docker volume create`
 
-## Volumes
+### Volumes
 
 - *Bind mounts* link files from the host system to the container. You may use them for local developments for frameworks supporting hot-reloading, but generally [Compose Watch][3] is preferred
 - *Named volumes* (a.k.a. simply volumes) persist data and can be reused across containers
 
-## Resource Management
+### Resource Management
 
 - Consider setting hard limits on cpu and memory usage to prevent containers impacting other containers and/or the docker host
 
-## Restarts
+### Restarts
 
 - Containers can be automatically restarted via the `--restart always` flag
 - Containers can be restarted on failure via the `--restart on-failure:<RESTART_COUNT>` flag
 
-## Networking
+### Networking
 
 - Options for networking include *bridge* (default, private network on host machine), *host* (no isolation), *overlay* (for distributed systems) and *none*
 - Note that containers can only be reached via hostnames when using user-defined networks
 
-## Compose
+### Compose
 
 - We can read environment variables from env files via the `env_file` option
 - Use the [watch][3] option in combination with [profiles][4] for local development
 - Use [includes][5] to modularize compose files
+
+## K8s
+
+### Architecture
+
+- K8s distinguishes between control (brain) and data (muscle) planes
+- The control plane contains master nodes, data planes contains worker nodes
+- Master nodes contain API server (main entry point for all admin tasks), etcd (key-value store for cluster configuration and state data), scheduler (to place pods on nodes), controller manager and cloud controller manager (to interact with cloud infrastructure)
+- Worker nodes contain kubelet (agent, ensures that containers are running in pods as specified), container runtime (containerd, crio-o, etc.) kube-proxy (networking )nd other k8s objects (services, deployments, jobs, replica sets, stateful sets, etc.)
 
 
 [1]: https://www.udemy.com/course/complete-docker-kubernetes
