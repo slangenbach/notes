@@ -54,6 +54,10 @@ Notes on the [course][1] from Udemy.
 
 ## K8s
 
+### General
+
+- Use [k9s][6] to interact with k8s
+
 ### Architecture
 
 - K8s distinguishes between control (brain) and data (muscle) planes
@@ -61,9 +65,44 @@ Notes on the [course][1] from Udemy.
 - Master nodes contain API server (main entry point for all admin tasks), etcd (key-value store for cluster configuration and state data), scheduler (to place pods on nodes), controller manager and cloud controller manager (to interact with cloud infrastructure)
 - Worker nodes contain kubelet (agent, ensures that containers are running in pods as specified), container runtime (containerd, crio-o, etc.) kube-proxy (networking )nd other k8s objects (services, deployments, jobs, replica sets, stateful sets, etc.)
 
+### Configuration
+
+- Manifest files are written in YAML
+- They contain the *apiVersion*, *kind*, *metadata* and *spec* top-level fields
+- Use `kubectl apply` and `kubectl delete` to modify k8s objects
+- We can store configuration for multiple objects within a single YAML file by adding `---` between them. Usually it's better to use a dedicated configuration file per object
+
+### Pods
+
+- Pods are a single instance of a running process in the cluster
+- They are a higher-level abstraction than working with containers directly
+- Can contain one or more containers
+- Containers within a pod can communicate with each other, share storage and network and write to the same values
+- Per *default* all pods in K8s can communicate with each other
+
+### Services
+
+- Services provide stable IP addresses and DNS for pods
+- Pods are assigned to services using selectors
+
+### Replica Sets
+
+- Replica sets make sure pods keep running as specified, e.g. in case of failures
+- They use a template and the number of replicas to create pods
+- We usually interact with ReplicaSets via Deployments, as modifying replica sets won't modify existing pods automatically
+
+### Deployments
+
+- Deployments are a higher level abstraction of pods and replica sets
+- Deployments provide rolling updates, rollbacks and allow us to specify replicas
+- We can manage rollouts via `kubectl rollout`
+- Use *kubernetes.io/change-cause* annotation to populate the *CHANGE-CAUSE* in rollout history
+- If deployments are failing, describe the pod and investigate events
+
 
 [1]: https://www.udemy.com/course/complete-docker-kubernetes
 [2]: https://github.com/GoogleContainerTools/distroless
 [3]: https://docs.docker.com/compose/how-tos/file-watch/
 [4]: https://docs.docker.com/compose/how-tos/profiles/
 [5]: https://docs.docker.com/reference/compose-file/include/
+[6]: https://k9scli.io/
