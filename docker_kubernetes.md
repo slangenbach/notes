@@ -83,7 +83,11 @@ Notes on the [course][1] from Udemy.
 ### Services
 
 - Services provide stable IP addresses and DNS for pods
-- Pods are assigned to services using selectors
+- Pods are assigned to services using selectors which apply to labels
+- Use *ClusterIP* for exposing a a service internally
+- Use *NodePort* for exposing a service externally without load balancing
+- Use *LoadBalancer* for exposing a service externally *with* a third-party load balancer
+- Use *ExternalName* to allow services within the cluster to access external services via DNS name
 
 ### Replica Sets
 
@@ -99,6 +103,58 @@ Notes on the [course][1] from Udemy.
 - Use *kubernetes.io/change-cause* annotation to populate the *CHANGE-CAUSE* in rollout history
 - If deployments are failing, describe the pod and investigate events
 
+### Resource Management
+
+#### Namespaces
+
+- Use namespaces to logically isolate groups of resources, enforce RBAC and set resource quotas
+- Default namespaces include: default, kube-system, kube-public and kube-node-release
+- Set the default namespace via `kubectl config set-context --current --namespace=<NAMESPACE_NAME>`
+- To make pods communicate across namespaces, use the FQDN, e.g. <POD_NAME.NAMESPACE.CLUSTER_NAME>
+
+#### Labels
+
+- Labels are key-value pairs which contain identifying metadata
+- They are *not* unique
+- Use labels to group k8s resources, then use selectors to match labels
+- We can use *equality*-based (matchLabels), and *set*-based (matchExpression) selectors
+- Consider using the *managed* key with *matchExpressions* (key: managed, operator: Exists) to easily select resources
+
+#### Annotations
+
+- Annotations contain *non*-identifying metadata
+- Annotations contain a prefix (DNS subdomain) and a name
+- Use annotations to provide configuration to resources
+
+#### Quotas, Requests and Limits
+
+- Quotas are applied at the *namespace* level and define hard limits on resource usage
+- Requests and Limits are applied at the *pod-level*
+- Requests specify the minimum resources a container needs, while limits specify the maximum resources a container can consume
+- Make sure to quotas contain enough resources to handle rollouts
+
+#### Probes
+
+- Probes are periodic health checks performed by k8s
+- We can use *startup*, *readiness* and *liveness* probes
+- Readiness probes check if the container is ready to accept traffic (keeps executing throughout the container lifecycle)
+- Liveness probes check if the container is still running (keeps executing throughout the container lifecycle)
+
+### Storage
+
+- Volumes are directories which are accessible to containers in a pod
+- Volume types include *emptyDir* (ephemeral), *local* (persistent, defined at node level, requires configuring persistent volume node affinity), *persistent volume (PV)* (requires persistent volume claims, PVC, for usage in pods), *ConfigMaps* and *Secrets*
+- PVs have 1-to-1 relationship to Persistent Volume Claims
+- PV access types include *ReadWriteOnce* (can be mounted by *single* node), *ReadWriteOncePod* (can be mounted by a single *pod*), *ReadWriteMany*, *ReadOnlyMany*
+- Custom storage solution are supported by the [Container Storage Interface (CSI)][7]
+
+#### Stateful Sets
+
+- Stateful Sets (SS) support us in managing stateful applications
+- They provide stable and unique network identities, provide consistent storage and enable us to create, scale and delete pods in order
+- Note that SS create one replica per PVC per replica
+- Use *headless* services (by specifying *clusterIp: None* in a service definition) to provide a stable DNS entry to talk to specific pods
+
 
 [1]: https://www.udemy.com/course/complete-docker-kubernetes
 [2]: https://github.com/GoogleContainerTools/distroless
@@ -106,3 +162,4 @@ Notes on the [course][1] from Udemy.
 [4]: https://docs.docker.com/compose/how-tos/profiles/
 [5]: https://docs.docker.com/reference/compose-file/include/
 [6]: https://k9scli.io/
+[7]: https://kubernetes-csi.github.io/docs/
