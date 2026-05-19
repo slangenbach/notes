@@ -155,6 +155,23 @@ Notes on the [course][1] from Udemy.
 - Note that SS create one replica per PVC per replica
 - Use *headless* services (by specifying *clusterIp: None* in a service definition) to provide a stable DNS entry to talk to specific pods
 
+### Configuration
+
+- Use config maps to provide configuration to pods via environment variables or as files via volume mounts
+- When making ConfigMaps available as files, each key-value pair in the map will be exposed as a dedicated file
+- A config map must exist in the same namespace as the pod using it
+- Consider keeping dedicated config maps for environment variables and files
+- Consider reading env values via `valueFrom configMapKeyRef` if environment variable names different across pods
+
+### Secrets
+
+- Per default secrets are **not** encrypted by default, but just base64 encoded
+- Secrets can be provided as environment variables via `secretRef` or as files via volume mounts
+
+### Security
+
+- tbd
+
 
 [1]: https://www.udemy.com/course/complete-docker-kubernetes
 [2]: https://github.com/GoogleContainerTools/distroless
