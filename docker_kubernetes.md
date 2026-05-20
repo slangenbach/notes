@@ -57,6 +57,7 @@ Notes on the [course][1] from Udemy.
 ### General
 
 - Use [k9s][6] to interact with k8s
+- Use `kubectl api-resources` to get an overview of all k8s resources
 
 ### Architecture
 
@@ -170,7 +171,11 @@ Notes on the [course][1] from Udemy.
 
 ### Security
 
-- tbd
+- Core security constructs in K8s include RBAC, network policies, encryption (at rest), pod security standards (PSS)
+- RBAC can be enforced on users, groups and service accounts
+- Roles focus on resources within a specific namespace, while cluster roles are enforced on the entire cluster
+- Role bindings assign roles to users, groups and service accounts; Cluster role bindings do the same for cluster roles
+- Use K8s API groups, resources and subresources to implement fine-grained permissions
 
 
 [1]: https://www.udemy.com/course/complete-docker-kubernetes
