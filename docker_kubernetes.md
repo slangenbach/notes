@@ -79,7 +79,7 @@ Notes on the [course][1] from Udemy.
 - They are a higher-level abstraction than working with containers directly
 - Can contain one or more containers
 - Containers within a pod can communicate with each other, share storage and network and write to the same values
-- Per *default* all pods in K8s can communicate with each other
+- Per *default* all pods in k8s can communicate with each other
 
 ### Services
 
@@ -171,11 +171,31 @@ Notes on the [course][1] from Udemy.
 
 ### Security
 
-- Core security constructs in K8s include RBAC, network policies, encryption (at rest), pod security standards (PSS)
+#### RBAC
+
+- Core security constructs in k8s include RBAC, network policies, encryption (at rest), pod security standards (PSS)
 - RBAC can be enforced on users, groups and service accounts
 - Roles focus on resources within a specific namespace, while cluster roles are enforced on the entire cluster
 - Role bindings assign roles to users, groups and service accounts; Cluster role bindings do the same for cluster roles
-- Use K8s API groups, resources and subresources to implement fine-grained permissions
+- Use k8s API groups, resources and subresources to implement fine-grained permissions
+- Service accounts (SA) are intended for applications, so that they can interact with the k8s API
+- SAs are namespaced
+
+#### Network Policies
+
+- By default, all traffic between pods is allowed
+- A network policy contains assignments to pods, ingress and egress rules
+- Be aware that network policies are namespace-scoped
+- In order for network policies to have an effect, we ne need a [CNI][8] plugin such as [Calico][9] or [Cilium][10]
+- Depending on how network policies are constructed, rules either add up (logical AND) or are applied selectively (logical OR)
+- Start with a deny-all policy and only allow communication where necessary
+- In order to allow pod A to communicate to pod A, you should create a policy that allows traffic to the k8s DNS in order to use services correctly
+
+#### Pod Security Standards
+
+- PSS apply to pods and define security contexts
+- Contexts are enforced by the security admission controller and can be applied on the namespace level using labels
+- The Controller can set the modes *enforce, warn or audit* and set the levels *restricted, baseline or privileged*
 
 
 [1]: https://www.udemy.com/course/complete-docker-kubernetes
@@ -185,3 +205,6 @@ Notes on the [course][1] from Udemy.
 [5]: https://docs.docker.com/reference/compose-file/include/
 [6]: https://k9scli.io/
 [7]: https://kubernetes-csi.github.io/docs/
+[8]: https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/
+[9]: https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
+[10]: https://docs.cilium.io/en/stable/overview/intro/
