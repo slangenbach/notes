@@ -197,6 +197,17 @@ Notes on the [course][1] from Udemy.
 - Contexts are enforced by the security admission controller and can be applied on the namespace level using labels
 - The Controller can set the modes *enforce, warn or audit* and set the levels *restricted, baseline or privileged*
 
+### Kustomize
+
+- Kustomize is built into `kubectl` and allows us to manage configuration of similar applications across environments
+- Bases, overlays and patches are key concepts: A *base* is a set of manifests shared across an environment, while an *overlay* applies environment-specific customizations on top of a base
+- Kustomize supports customization of [various objects][11]
+- Kustomize can dynamically generate config maps (from standard and env files) and secrets from files and environment variables
+- Patches allow us to write partial specification which are then merged with existing objects
+- Merge patches are useful for customizing configuration for specific resources
+- JSON patches are useful to remove configuration for specific resource
+- Make sure to create a dedicated YAML file per patch
+
 
 [1]: https://www.udemy.com/course/complete-docker-kubernetes
 [2]: https://github.com/GoogleContainerTools/distroless
@@ -208,3 +219,4 @@ Notes on the [course][1] from Udemy.
 [8]: https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/network-plugins/
 [9]: https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
 [10]: https://docs.cilium.io/en/stable/overview/intro/
+[11]: https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/
