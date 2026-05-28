@@ -58,11 +58,13 @@ Notes on the [course][1] from Udemy.
 
 - Use [k9s][6] to interact with k8s
 - Use `kubectl api-resources` to get an overview of all k8s resources
+- Use `kubectl explain <RESOURCE> --recursive` to get a spec for a resource
 
 ### Architecture
 
 - K8s distinguishes between control (brain) and data (muscle) planes
-- The control plane contains master nodes, data planes contains worker nodes
+- The control plane contains master nodes
+- Data planes contains worker nodes
 - Master nodes contain API server (main entry point for all admin tasks), etcd (key-value store for cluster configuration and state data), scheduler (to place pods on nodes), controller manager and cloud controller manager (to interact with cloud infrastructure)
 - Worker nodes contain kubelet (agent, ensures that containers are running in pods as specified), container runtime (containerd, crio-o, etc.) kube-proxy (networking )nd other k8s objects (services, deployments, jobs, replica sets, stateful sets, etc.)
 
@@ -86,7 +88,7 @@ Notes on the [course][1] from Udemy.
 - Services provide stable IP addresses and DNS for pods
 - Pods are assigned to services using selectors which apply to labels
 - Use *ClusterIP* for exposing a a service internally
-- Use *NodePort* for exposing a service externally without load balancing
+- Use *NodePort* for exposing a service externally without load balancing (valid range from 30000 to 32767)
 - Use *LoadBalancer* for exposing a service externally *with* a third-party load balancer
 - Use *ExternalName* to allow services within the cluster to access external services via DNS name
 
@@ -109,7 +111,7 @@ Notes on the [course][1] from Udemy.
 #### Namespaces
 
 - Use namespaces to logically isolate groups of resources, enforce RBAC and set resource quotas
-- Default namespaces include: default, kube-system, kube-public and kube-node-release
+- Default namespaces include: default, kube-system (internal services), kube-public (services for all users) and kube-node-release
 - Set the default namespace via `kubectl config set-context --current --namespace=<NAMESPACE_NAME>`
 - To make pods communicate across namespaces, use the FQDN, e.g. <POD_NAME.NAMESPACE.CLUSTER_NAME>
 
