@@ -46,6 +46,10 @@ Notes on the [course][1] from Udemy.
 - Options for networking include *bridge* (default, private network on host machine), *host* (no isolation), *overlay* (for distributed systems) and *none*
 - Note that containers can only be reached via hostnames when using user-defined networks
 
+### Security
+
+- Use non-root users to run containers and restrict Linux capabilities via the `--cap-drop <CAPABILITY>` flag
+
 ### Compose
 
 - We can read environment variables from env files via the `env_file` option
@@ -82,6 +86,7 @@ Notes on the [course][1] from Udemy.
 - Can contain one or more containers
 - Containers within a pod can communicate with each other, share storage and network and write to the same values
 - Per *default* all pods in k8s can communicate with each other
+- In pod manifests, the command field is equivalent Docker's entrypoint, and args is equivalent to Docker's cmd
 
 ### Services
 
@@ -168,8 +173,11 @@ Notes on the [course][1] from Udemy.
 
 ### Secrets
 
-- Per default secrets are **not** encrypted by default, but just base64 encoded
+- Per default secrets are **not** encrypted by default, but just base64 encoded, e.g. via `echo -n 'secret' | base64`
 - Secrets can be provided as environment variables via `secretRef` or as files via volume mounts
+- Use `kubectl get secret <SECRET_NAME> -o yaml` to view base64-encoded values for secrets
+- We can enable encryption-at-rest for secrets in Kubernetes
+- Consider using [Secret Store CSI Driver][12] to sync secrets from external services (Azure Key Vault, AWS Secretsmanager, Google Secret Manager, etc.)
 
 ### Security
 
@@ -199,6 +207,11 @@ Notes on the [course][1] from Udemy.
 - Contexts are enforced by the security admission controller and can be applied on the namespace level using labels
 - The Controller can set the modes *enforce, warn or audit* and set the levels *restricted, baseline or privileged*
 
+#### Security Contexts
+
+- SCs allow for granular control of specific security settings at the pod or container level
+
+
 ### Kustomize
 
 - Kustomize is built into `kubectl` and allows us to manage configuration of similar applications across environments
@@ -222,3 +235,4 @@ Notes on the [course][1] from Udemy.
 [9]: https://docs.tigera.io/calico/latest/getting-started/kubernetes/quickstart
 [10]: https://docs.cilium.io/en/stable/overview/intro/
 [11]: https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/
+[12]: https://github.com/kubernetes-sigs/secrets-store-csi-driver

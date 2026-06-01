@@ -16,7 +16,7 @@ Notes on the [course][1] from Udemy.
 
 - Use `kubectl get all` to get all resources in the cluster
 - Use `kubectl run <NAME> --image=<IMAGE_NAME> --dry-run=client -o yaml > manifest.yml` to easily create a manifest file
-- Use `kubectl edit pod <POD_NAME>` to edit a pod in place
+- Use `kubectl edit deployment <DEPLOYMENT_NAME>` to edit a deployment in place
 - Use `kubectl scale deployment <NAME> --replicas=<NUM_REPLICAS>` to scale a deployment
 - Use `kubectl replace <RESOURCE> <RESOURCE_NAME>` to replace resources
 - Consider using `-o wide` to display additional details
