@@ -136,8 +136,9 @@ Notes on the [course][1] from Udemy.
 
 #### Quotas, Requests and Limits
 
-- Quotas are applied at the *namespace* level and define hard limits on resource usage
+- Quotas are applied at the *namespace* level and define hard limits on resource usage globally
 - Requests and Limits are applied at the *pod-level*
+- Use *LimitRanges* to set default limits for cpu and memory per pod
 - Requests specify the minimum resources a container needs, while limits specify the maximum resources a container can consume
 - Make sure to quotas contain enough resources to handle rollouts
 
