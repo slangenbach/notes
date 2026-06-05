@@ -5,12 +5,7 @@ Notes on the [course][1] from Udemy.
 ## General
 
 - [nerdctl][2] is the CLI for [containerd][3]
-- [crictl] is the CLI to debug container runtimes
-
-## Architecture
-
-- K8s supports different container runtimes via the container runtime interface (CRI)
-- Containers itself are supported via the Open Container Initiative
+- [crictl][4] is the CLI to debug container runtimes
 
 ## CLI
 
@@ -21,7 +16,12 @@ Notes on the [course][1] from Udemy.
 - Use `kubectl replace <RESOURCE> <RESOURCE_NAME>` to replace resources
 - Consider using `-o wide` to display additional details
 
+## Exam advice
+
+- Read through the [notes][5] of previous students
 
 [1]: https://www.udemy.com/course/certified-kubernetes-application-developer
 [2]: https://github.com/containerd/nerdctl
-[3]: https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/
+[3]: https://containerd.io/
+[4]: https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/
+[5]: https://github.com/lucassha/CKAD-resources

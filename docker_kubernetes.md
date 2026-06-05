@@ -69,6 +69,8 @@ Notes on the [course][1] from Udemy.
 - K8s distinguishes between control (brain) and data (muscle) planes
 - The control plane contains master nodes
 - Data planes contains worker nodes
+- K8s supports different container runtimes via the container runtime interface (CRI)
+- Containers itself are supported via the Open Container Initiative
 - Master nodes contain API server (main entry point for all admin tasks), etcd (key-value store for cluster configuration and state data), scheduler (to place pods on nodes), controller manager and cloud controller manager (to interact with cloud infrastructure)
 - Worker nodes contain kubelet (agent, ensures that containers are running in pods as specified), container runtime (containerd, crio-o, etc.) kube-proxy (networking )nd other k8s objects (services, deployments, jobs, replica sets, stateful sets, etc.)
 
@@ -149,6 +151,19 @@ Notes on the [course][1] from Udemy.
 - Readiness probes check if the container is ready to accept traffic (keeps executing throughout the container lifecycle)
 - Liveness probes check if the container is still running (keeps executing throughout the container lifecycle)
 
+#### Node Affinity
+
+- Node affinity can be specified as required or preferred
+
+#### Taints and Tolerations
+
+- Nodes can be *tainted*, so that they only accept certain pods
+- To enable pods to be placed on nodes with taints, they need *toleration*
+- K8s supports *NoSchedule*, *PreferNoSchedule* and *NoExecute* taint *effects*
+- To taint a node via CLI run `kubectl taint nodes <NODE_NAME> <KEY=VALUE:EFFECT>`
+- To untaint a node, run the same command but add a hyphen at the end
+- Fun fact: The kubemaster node contains a taint, so that no pods can be scheduled on it
+
 ### Storage
 
 - Volumes are directories which are accessible to containers in a pod
@@ -181,6 +196,12 @@ Notes on the [course][1] from Udemy.
 - Consider using [Secret Store CSI Driver][12] to sync secrets from external services (Azure Key Vault, AWS Secretsmanager, Google Secret Manager, etc.)
 
 ### Security
+
+#### Accounts
+
+- Service accounts do not create tokens anymore, we need the TOek
+- Applications running within the cluster can mount the service account token and use it directly, applications running outside of the cluster use the token as bearer token
+- K8s automatically mounts the default service account token
 
 #### RBAC
 
