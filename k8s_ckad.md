@@ -15,6 +15,7 @@ Notes on the [course][1] from Udemy.
 - Use `kubectl scale deployment <NAME> --replicas=<NUM_REPLICAS>` to scale a deployment
 - Use `kubectl replace <RESOURCE> <RESOURCE_NAME>` to replace resources
 - Consider using `-o wide` to display additional details
+- Use `kubectl logs -f <CONTAINER_NAME>` to view the logs of a container
 
 ## Exam advice
 

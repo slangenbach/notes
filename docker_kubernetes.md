@@ -85,10 +85,15 @@ Notes on the [course][1] from Udemy.
 
 - Pods are a single instance of a running process in the cluster
 - They are a higher-level abstraction than working with containers directly
-- Can contain one or more containers
+- Pods can contain one or more containers
 - Containers within a pod can communicate with each other, share storage and network and write to the same values
 - Per *default* all pods in k8s can communicate with each other
 - In pod manifests, the command field is equivalent Docker's entrypoint, and args is equivalent to Docker's cmd
+
+#### Multi-Container Pods
+
+- Design patterns for multi-container pods are: co-located, init or sidecar containers
+- Sidecar containers are a variation of init containers, which remain running after startup
 
 ### Services
 
@@ -143,6 +148,11 @@ Notes on the [course][1] from Udemy.
 - Use *LimitRanges* to set default limits for cpu and memory per pod
 - Requests specify the minimum resources a container needs, while limits specify the maximum resources a container can consume
 - Make sure to quotas contain enough resources to handle rollouts
+
+#### Status and Conditions
+
+- Pods can be in status Pending, ContainerCreating or Running
+- Pod conditions include PodScheduled, Initialized, ContainersReady, Ready
 
 #### Probes
 
@@ -234,6 +244,10 @@ Notes on the [course][1] from Udemy.
 - SCs allow for granular control of specific security settings at the pod or container level
 
 
+### Observability
+
+- Use [metrics server][13] to view instant resource usage of nodes and pods and to enable auto-scaling
+
 ### Kustomize
 
 - Kustomize is built into `kubectl` and allows us to manage configuration of similar applications across environments
@@ -258,3 +272,4 @@ Notes on the [course][1] from Udemy.
 [10]: https://docs.cilium.io/en/stable/overview/intro/
 [11]: https://kubectl.docs.kubernetes.io/references/kustomize/kustomization/
 [12]: https://github.com/kubernetes-sigs/secrets-store-csi-driver
+[13]: https://kubernetes-sigs.github.io/metrics-server/
