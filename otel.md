@@ -63,15 +63,12 @@ Notes on the [course][1] from Udemy.
 
 ### Grafana
 
-- tbd
+- Filter by the *exported_job* field to view metrics for your app in Grafana
 
-### OTel Collector
-
-- tbd
-
-### Logging
+## Misc
 
 - Use [structlog][3] for structured logging in Python
+
 
 
 [1]: https://www.udemy.com/course/opentelemetry-observability
