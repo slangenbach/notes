@@ -16,6 +16,7 @@ Notes on the [course][1] from Udemy.
 - Use `kubectl replace <RESOURCE> <RESOURCE_NAME>` to replace resources
 - Consider using `-o wide` to display additional details
 - Use `kubectl logs -f <CONTAINER_NAME>` to view the logs of a container
+- Use `kubectl get <RESOURCE> --selector=key=value` to filter a resource by label
 
 ## Exam advice
 

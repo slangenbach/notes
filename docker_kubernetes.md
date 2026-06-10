@@ -115,8 +115,21 @@ Notes on the [course][1] from Udemy.
 - Deployments are a higher level abstraction of pods and replica sets
 - Deployments provide rolling updates, rollbacks and allow us to specify replicas
 - We can manage rollouts via `kubectl rollout`
+- Do rollback a deployment use `kubectl rollout undo deployment <DEPLOYMENT_NAME>`
 - Use *kubernetes.io/change-cause* annotation to populate the *CHANGE-CAUSE* in rollout history
 - If deployments are failing, describe the pod and investigate events
+
+#### Strategies
+
+- We can implement *blue/green* deployments in k8s by using version labels on deployment and services. First, we deploy the blue version of the using the v1 tag and the corresponding service. Then we deploy the green version using the v2 tag. Finally we switch the selector of the service from v1 to v2.
+- We can also implement *canary* deployments in k8s in a similar way. We first create the blue and green version of the app, but add a common label, i.e. `app=backend`. Then update the selector of the service to match the common label. Then we limit the number of pods in the green deployment to reduce the amount of traffic to be sent there
+- Check out service meshes (Istio, Linkerd) for advanced configuration
+
+### Jobs
+
+- K8s supports batch jobs via the *Job* object
+- It also supports cron jobs via the *CronJob* object
+- Jobs can run sequentially by specifying *completions*, or in parallel by specifying *parallelism*
 
 ### Resource Management
 
@@ -227,6 +240,7 @@ Notes on the [course][1] from Udemy.
 
 - By default, all traffic between pods is allowed
 - A network policy contains assignments to pods, ingress and egress rules
+- Assignment can be done via pod/namespace selectors and via IP addresses (for services outside of k8s)
 - Be aware that network policies are namespace-scoped
 - In order for network policies to have an effect, we ne need a [CNI][8] plugin such as [Calico][9] or [Cilium][10]
 - Depending on how network policies are constructed, rules either add up (logical AND) or are applied selectively (logical OR)
